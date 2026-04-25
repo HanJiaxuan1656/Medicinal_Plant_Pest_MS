@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.medicinalplant.mapper.DiseasePesticideLinkMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="com.example.medicinalplant.entity.DiseasePesticideLink">
+        <id property="id" column="id"/>
+        <result property="pdId" column="pd_id"/>
+        <result property="pesticideId" column="pesticide_id"/>
+        <result property="effectiveness" column="effectiveness"/>
+        <result property="usageDosage" column="usage_dosage"/>
+        <result property="applicationMethod" column="application_method"/>
+        <result property="safeIntervalDays" column="safe_interval_days"/>
+        <result property="sideEffects" column="side_effects"/>
+        <result property="notes" column="notes"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <!-- 带关联对象的结果映射 -->
+    <resultMap id="DetailResultMap" type="com.example.medicinalplant.entity.DiseasePesticideLink" extends="BaseResultMap">
+        <association property="pestDisease" javaType="com.example.medicinalplant.entity.PestDisease">
+            <id property="id" column="pd_id"/>
+            <result property="name" column="disease_name"/>
+            <result property="type" column="disease_type"/>
+            <result property="imageUrl" column="disease_image_url"/>
+        </association>
+        <association property="pesticide" javaType="com.example.medicinalplant.entity.Pesticide">
+            <id property="id" column="pesticide_id"/>
+            <result property="name" column="pesticide_name"/>
+            <result property="category" column="pesticide_category"/>
+            <result property="imageUrl" column="pesticide_image_url"/>
+        </association>
+        <association property="creator" javaType="com.example.medicinalplant.entity.ExpertUser">
+            <id property="id" column="created_by"/>
+            <result property="name" column="creator_name"/>
+        </association>
+    </resultMap>
+
+    <!-- 效果统计结果映射 -->
+    <resultMap id="EffectivenessCountResultMap" type="com.example.medicinalplant.mapper.DiseasePesticideLinkMapper$EffectivenessCount">
+        <result property="effectiveness" column="effectiveness"/>
+        <result property="count" column="count"/>
+    </resultMap>
+
+    <!-- 分页查询关联关系 -->
+    <select id="selectPage" resultMap="DetailResultMap">
+        SELECT 
+            dpl.*,
+            pd.name as disease_name,
+            pd.type as disease_type,
+            pd.image_url as disease_image_url,
+            p.name as pesticide_name,
+            p.category as pesticide_category,
+            p.image_url as pesticide_image_url,
+            eu.name as creator_name
+        FROM disease_pesticide_link dpl
+        LEFT JOIN pest_disease pd ON dpl.pd_id = pd.id
+        LEFT JOIN pesticide p ON dpl.pesticide_id = p.id
+        LEFT JOIN expert_user eu ON dpl.created_by = eu.id
+        <where>
+            <if test="diseaseName != null and diseaseName != ''">
+                AND pd.name LIKE CONCAT('%', #{diseaseName}, '%')
+            </if>
+            <if test="pesticideName != null and pesticideName != ''">
+                AND p.name LIKE CONCAT('%', #{pesticideName}, '%')
+            </if>
+            <if test="effectiveness != null and effectiveness != ''">
+                AND dpl.effectiveness = #{effectiveness}
+            </if>
+        </where>
+        ORDER BY dpl.created_at DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <!-- 统计查询结果数量 -->
+    <select id="selectCount" resultType="int">
+        SELECT COUNT(*)
+        FROM disease_pesticide_link dpl
+        LEFT JOIN pest_disease pd ON dpl.pd_id = pd.id
+        LEFT JOIN pesticide p ON dpl.pesticide_id = p.id
+        <where>
+            <if test="diseaseName != null and diseaseName != ''">
+                AND pd.name LIKE CONCAT('%', #{diseaseName}, '%')
+            </if>
+            <if test="pesticideName != null and pesticideName != ''">
+                AND p.name LIKE CONCAT('%', #{pesticideName}, '%')
+            </if>
+            <if test="effectiveness != null and effectiveness != ''">
+                AND dpl.effectiveness = #{effectiveness}
+            </if>
+        </where>
+    </select>
+
+    <!-- 插入关联关系 -->
+    <insert id="insert" parameterType="com.example.medicinalplant.entity.DiseasePesticideLink" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO disease_pesticide_link (pd_id, pesticide_id, effectiveness, usage_dosage, application_method, safe_interval_days, side_effects, notes, created_by)
+        VALUES (#{pdId}, #{pesticideId}, #{effectiveness}, #{usageDosage}, #{applicationMethod}, #{safeIntervalDays}, #{sideEffects}, #{notes}, #{createdBy})
+    </insert>
+
+    <!-- 更新关联关系 -->
+    <update id="update" parameterType="com.example.medicinalplant.entity.DiseasePesticideLink">
+        UPDATE disease_pesticide_link SET 
+            effectiveness = #{effectiveness}, 
+            usage_dosage = #{usageDosage}, 
+            application_method = #{applicationMethod}, 
+            safe_interval_days = #{safeIntervalDays}, 
+            side_effects = #{sideEffects}, 
+            notes = #{notes}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除关联关系 -->
+    <delete id="delete">
+        DELETE FROM disease_pesticide_link WHERE id = #{id}
+    </delete>
+
+    <!-- 批量删除关联关系 -->
+    <delete id="deleteByIds">
+        DELETE FROM disease_pesticide_link WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 根据ID查询关联关系 -->
+    <select id="selectById" resultMap="DetailResultMap">
+        SELECT
+            dpl.*,
+            pd.name as disease_name,
+            pd.type as disease_type,
+            pd.image_url as disease_image_url,
+            p.name as pesticide_name,
+            p.category as pesticide_category,
+            p.image_url as pesticide_image_url,
+            eu.name as creator_name
+        FROM disease_pesticide_link dpl
+        LEFT JOIN pest_disease pd ON dpl.pd_id = pd.id
+        LEFT JOIN pesticide p ON dpl.pesticide_id = p.id
+        LEFT JOIN expert_user eu ON dpl.created_by = eu.id
+        WHERE dpl.id = #{id}
+    </select>
+
+    <!-- 查询所有关联关系 -->
+    <select id="findAll" resultMap="DetailResultMap">
+        SELECT
+            dpl.*,
+            pd.name as disease_name,
+            pd.type as disease_type,
+            pd.image_url as disease_image_url,
+            p.name as pesticide_name,
+            p.category as pesticide_category,
+            p.image_url as pesticide_image_url,
+            eu.name as creator_name
+        FROM disease_pesticide_link dpl
+        LEFT JOIN pest_disease pd ON dpl.pd_id = pd.id
+        LEFT JOIN pesticide p ON dpl.pesticide_id = p.id
+        LEFT JOIN expert_user eu ON dpl.created_by = eu.id
+        ORDER BY dpl.created_at DESC
+    </select>
+
+    <!-- 根据病虫害ID查询关联关系 -->
+    <select id="findByPestDiseaseId" resultMap="DetailResultMap">
+        SELECT
+            dpl.*,
+            pd.name as disease_name,
+            pd.type as disease_type,
+            pd.image_url as disease_image_url,
+            p.name as pesticide_name,
+            p.category as pesticide_category,
+            p.image_url as pesticide_image_url,
+            eu.name as creator_name
+        FROM disease_pesticide_link dpl
+        LEFT JOIN pest_disease pd ON dpl.pd_id = pd.id
+        LEFT JOIN pesticide p ON dpl.pesticide_id = p.id
+        LEFT JOIN expert_user eu ON dpl.created_by = eu.id
+        WHERE dpl.pd_id = #{pdId}
+        ORDER BY dpl.created_at DESC
+    </select>
+
+    <!-- 根据农药ID查询关联关系 -->
+    <select id="findByPesticideId" resultMap="DetailResultMap">
+        SELECT
+            dpl.*,
+            pd.name as disease_name,
+            pd.type as disease_type,
+            pd.image_url as disease_image_url,
+            p.name as pesticide_name,
+            p.category as pesticide_category,
+            p.image_url as pesticide_image_url,
+            eu.name as creator_name
+        FROM disease_pesticide_link dpl
+        LEFT JOIN pest_disease pd ON dpl.pd_id = pd.id
+        LEFT JOIN pesticide p ON dpl.pesticide_id = p.id
+        LEFT JOIN expert_user eu ON dpl.created_by = eu.id
+        WHERE dpl.pesticide_id = #{pesticideId}
+        ORDER BY dpl.created_at DESC
+    </select>
+
+    <!-- 检查关联关系是否已存在 -->
+    <select id="checkExists" resultType="int">
+        SELECT COUNT(*) FROM disease_pesticide_link
+        WHERE pd_id = #{pdId} AND pesticide_id = #{pesticideId}
+    </select>
+
+    <!-- 根据效果查询关联关系 -->
+    <select id="findByEffectiveness" resultMap="DetailResultMap">
+        SELECT
+            dpl.*,
+            pd.name as disease_name,
+            pd.type as disease_type,
+            pd.image_url as disease_image_url,
+            p.name as pesticide_name,
+            p.category as pesticide_category,
+            p.image_url as pesticide_image_url,
+            eu.name as creator_name
+        FROM disease_pesticide_link dpl
+        LEFT JOIN pest_disease pd ON dpl.pd_id = pd.id
+        LEFT JOIN pesticide p ON dpl.pesticide_id = p.id
+        LEFT JOIN expert_user eu ON dpl.created_by = eu.id
+        WHERE dpl.effectiveness = #{effectiveness}
+        ORDER BY dpl.created_at DESC
+    </select>
+
+    <!-- 根据施用方法查询关联关系 -->
+    <select id="findByApplicationMethod" resultMap="DetailResultMap">
+        SELECT
+            dpl.*,
+            pd.name as disease_name,
+            pd.type as disease_type,
+            pd.image_url as disease_image_url,
+            p.name as pesticide_name,
+            p.category as pesticide_category,
+            p.image_url as pesticide_image_url,
+            eu.name as creator_name
+        FROM disease_pesticide_link dpl
+        LEFT JOIN pest_disease pd ON dpl.pd_id = pd.id
+        LEFT JOIN pesticide p ON dpl.pesticide_id = p.id
+        LEFT JOIN expert_user eu ON dpl.created_by = eu.id
+        WHERE dpl.application_method LIKE CONCAT('%', #{applicationMethod}, '%')
+        ORDER BY dpl.created_at DESC
+    </select>
+
+    <!-- 统计总数 -->
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM disease_pesticide_link
+    </select>
+
+    <!-- 查询效果分布统计 -->
+    <select id="findEffectivenessDistribution" resultMap="EffectivenessCountResultMap">
+        SELECT effectiveness, COUNT(*) as count
+        FROM disease_pesticide_link
+        GROUP BY effectiveness
+    </select>
+
+    <!-- 统计指定专家创建的病虫害-农药关系数量 -->
+    <select id="countByCreatedBy" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM disease_pesticide_link WHERE created_by = #{createdBy}
+    </select>
+
+</mapper>

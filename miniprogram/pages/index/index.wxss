@@ -1,0 +1,327 @@
+/* 首页样式 */
+.container {
+  padding: 0;
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  min-height: 100vh;
+}
+
+/* 导航区域 */
+.nav-section {
+  padding: 0 30rpx 30rpx;
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+}
+
+.nav-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20rpx;
+}
+
+.nav-item {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20rpx;
+  padding: 30rpx 20rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.nav-item:active {
+  transform: scale(0.95);
+}
+
+.nav-icon {
+  font-size: 48rpx;
+  margin-bottom: 12rpx;
+}
+
+.nav-text {
+  font-size: 24rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+/* 内容区域 */
+.section {
+  background: #fff;
+  margin: 20rpx 30rpx;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.section:first-of-type {
+  margin-top: 0;
+  border-top-left-radius: 30rpx;
+  border-top-right-radius: 30rpx;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.section-more {
+  font-size: 26rpx;
+  color: #4CAF50;
+}
+
+/* 植物列表 */
+.plant-scroll {
+  white-space: nowrap;
+}
+
+.plant-list {
+  display: flex;
+  gap: 20rpx;
+}
+
+.plant-item {
+  display: inline-block;
+  width: 200rpx;
+  background: #f8f9fa;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.1);
+}
+
+.plant-image {
+  width: 100%;
+  height: 150rpx;
+}
+
+.plant-info {
+  padding: 20rpx;
+}
+
+.plant-name {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.plant-alias {
+  font-size: 24rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.plant-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.view-count {
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* 病虫害列表 */
+.pest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.pest-item {
+  display: flex;
+  align-items: center;
+  background: #f8f9fa;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.pest-image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  margin-right: 20rpx;
+}
+
+.pest-info {
+  flex: 1;
+}
+
+.pest-name {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.pest-type {
+  margin-bottom: 12rpx;
+}
+
+.pest-desc {
+  font-size: 24rpx;
+  color: #666;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 农药列表 */
+.pesticide-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.pesticide-item {
+  display: flex;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  transition: all 0.3s;
+}
+
+.pesticide-item:active {
+  transform: scale(0.98);
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.1);
+}
+
+.pesticide-image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  background: #f0f0f0;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.pesticide-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.pesticide-name {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8rpx;
+  line-height: 1.3;
+}
+
+.pesticide-category {
+  margin-bottom: 8rpx;
+}
+
+.pesticide-desc {
+  font-size: 24rpx;
+  color: #666;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 求助预览 */
+.help-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.help-item {
+  background: #f8f9fa;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.help-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+}
+
+.help-title {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  flex: 1;
+  margin-right: 20rpx;
+}
+
+.help-desc {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.4;
+  margin-bottom: 16rpx;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.help-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 快速操作 */
+.quick-actions {
+  position: fixed;
+  bottom: 120rpx;
+  right: 30rpx;
+  z-index: 100;
+}
+
+.quick-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  background: #4CAF50;
+  color: #fff;
+  box-shadow: 0 8rpx 24rpx rgba(76, 175, 80, 0.4);
+  border: none;
+  font-size: 24rpx;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.quick-btn:active {
+  transform: scale(0.95);
+}
+
+.btn-icon {
+  font-size: 32rpx;
+}
+
+.btn-text {
+  font-size: 20rpx;
+}
+
+/* 标签样式扩展 */
+.tag-danger {
+  background: #fef0f0;
+  color: #f56c6c;
+}

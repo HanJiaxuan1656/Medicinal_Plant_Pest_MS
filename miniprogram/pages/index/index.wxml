@@ -1,0 +1,124 @@
+<!-- 首页 -->
+<view class="container">
+  <!-- 功能导航 -->
+  <view class="nav-section">
+    <view class="nav-grid">
+      <view class="nav-item" bindtap="goToPlants">
+        <view class="nav-icon">🌿</view>
+        <text class="nav-text">药用植物</text>
+      </view>
+      <view class="nav-item" bindtap="goToPests">
+        <view class="nav-icon">🐛</view>
+        <text class="nav-text">病虫害</text>
+      </view>
+      <view class="nav-item" bindtap="goToPesticides">
+        <view class="nav-icon">💊</view>
+        <text class="nav-text">农药信息</text>
+      </view>
+      <view class="nav-item" bindtap="goToHelp">
+        <view class="nav-icon">❓</view>
+        <text class="nav-text">专家求助</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 热门植物 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">热门植物</text>
+      <text class="section-more" bindtap="goToPlants">更多 ></text>
+    </view>
+    <scroll-view class="plant-scroll" scroll-x="true" show-scrollbar="false">
+      <view class="plant-list">
+        <view class="plant-item" wx:for="{{hotPlants}}" wx:key="id" bindtap="goToPlantDetail" data-id="{{item.id}}">
+          <image class="plant-image" src="{{item.imageUrl}}" mode="aspectFill" lazy-load></image>
+          <view class="plant-info">
+            <text class="plant-name">{{item.name}}</text>
+            <text class="plant-alias">{{item.alias}}</text>
+            <view class="plant-stats">
+              <text class="view-count">👁 {{item.viewCount}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 最新病虫害 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">最新病虫害</text>
+      <text class="section-more" bindtap="goToPests">更多 ></text>
+    </view>
+    <view class="pest-list">
+      <view class="pest-item" wx:for="{{recentPests}}" wx:key="id" bindtap="goToPestDetail" data-id="{{item.id}}">
+        <image class="pest-image" src="{{item.imageUrl}}" mode="aspectFill" lazy-load></image>
+        <view class="pest-info">
+          <text class="pest-name">{{item.name}}</text>
+          <view class="pest-type">
+            <text class="tag {{item.type === '病害' ? 'tag-danger' : 'tag-warning'}}">{{item.type}}</text>
+          </view>
+          <text class="pest-desc">{{item.description}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 农药推荐 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">农药推荐</text>
+      <text class="section-more" bindtap="goToPesticides">更多 ></text>
+    </view>
+    <view class="pesticide-list">
+      <view class="pesticide-item" wx:for="{{recentPesticides}}" wx:key="id" bindtap="goToPesticideDetail" data-id="{{item.id}}">
+        <image class="pesticide-image" src="{{item.imageUrl}}" mode="aspectFill" lazy-load></image>
+        <view class="pesticide-info">
+          <text class="pesticide-name">{{item.name}}</text>
+          <view class="pesticide-category">
+            <text class="tag {{item.category === '杀虫剂' ? 'tag-warning' : item.category === '杀菌剂' ? 'tag-danger' : 'tag-success'}}">{{item.category}}</text>
+          </view>
+          <text class="pesticide-desc">{{item.usageInstructions}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 专家求助 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">专家求助</text>
+      <text class="section-more" bindtap="goToHelp">更多 ></text>
+    </view>
+    <view class="help-preview">
+      <view class="help-item" wx:for="{{recentHelps}}" wx:key="id" bindtap="goToHelpDetail" data-id="{{item.id}}">
+        <view class="help-header">
+          <text class="help-title">{{item.title}}</text>
+          <view class="help-status">
+            <text class="tag {{item.status === 'approved' ? 'tag-primary' : 'tag-warning'}}">
+              {{item.status === 'approved' ? '已审核' : '待审核'}}
+            </text>
+          </view>
+        </view>
+        <text class="help-desc">{{item.description}}</text>
+        <view class="help-meta">
+          <text class="help-time">{{item.createdAt}}</text>
+          <text class="help-replies">{{item.replyCount || 0}} 回复</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快速操作 -->
+  <view class="quick-actions">
+    <button class="quick-btn primary" bindtap="goToHelpCreate">
+      <text class="btn-icon">➕</text>
+      <text class="btn-text">发起求助</text>
+    </button>
+  </view>
+</view>
+
+<!-- 加载状态 -->
+<view class="loading" wx:if="{{loading}}">
+  <text>加载中...</text>
+</view>

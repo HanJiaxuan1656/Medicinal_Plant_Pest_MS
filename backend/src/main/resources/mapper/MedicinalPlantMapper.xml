@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.medicinalplant.mapper.MedicinalPlantMapper">
+  <!-- 结果映射 -->
+  <resultMap id="BaseResultMap" type="com.example.medicinalplant.entity.MedicinalPlant">
+    <id column="id" property="id"/>
+    <result column="name" property="name"/>
+    <result column="alias" property="alias"/>
+    <result column="description" property="description"/>
+    <result column="medicinal_parts" property="medicinalParts"/>
+    <result column="efficacy" property="efficacy"/>
+    <result column="image_url" property="imageUrl"/>
+    <result column="created_at" property="createdAt"/>
+    <result column="updated_at" property="updatedAt"/>
+    <result column="created_by" property="createdBy"/>
+    <result column="view_count" property="viewCount"/>
+    <!-- 关联专家用户信息 -->
+    <association property="creator" javaType="com.example.medicinalplant.entity.ExpertUser">
+      <id column="expert_id" property="id"/>
+      <result column="expert_name" property="name"/>
+      <result column="expert_title" property="title"/>
+      <result column="expert_avatar" property="avatarUrl"/>
+    </association>
+  </resultMap>
+
+  <!-- 基础列 -->
+  <sql id="Base_Column_List">
+    id, name, alias, description, medicinal_parts, efficacy, image_url, created_at, updated_at, created_by, view_count
+  </sql>
+
+  <!-- 关联查询列 -->
+  <sql id="Join_Column_List">
+    p.id, p.name, p.alias, p.description, p.medicinal_parts, p.efficacy, p.image_url, p.created_at, p.updated_at, p.created_by, p.view_count,
+    e.id as expert_id, e.name as expert_name, e.title as expert_title, e.avatar_url as expert_avatar
+  </sql>
+
+  <!-- 查询所有药用植物 -->
+  <select id="findAll" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM medicinal_plant
+    ORDER BY created_at DESC
+  </select>
+
+  <!-- 根据ID查询药用植物 -->
+  <select id="findById" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM medicinal_plant
+    WHERE id = #{id}
+  </select>
+
+  <!-- 根据名称模糊查询药用植物 -->
+  <select id="findByName" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM medicinal_plant
+    WHERE name LIKE #{name} OR alias LIKE #{name}
+    ORDER BY created_at DESC
+  </select>
+
+  <!-- 插入药用植物 -->
+  <insert id="insert" parameterType="com.example.medicinalplant.entity.MedicinalPlant" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO medicinal_plant (
+      name, alias, description, medicinal_parts, efficacy, 
+      image_url, created_by
+    ) VALUES (
+      #{name}, #{alias}, #{description}, #{medicinalParts}, #{efficacy}, 
+      #{imageUrl}, #{createdBy}
+    )
+  </insert>
+
+  <!-- 更新药用植物 -->
+  <update id="update" parameterType="com.example.medicinalplant.entity.MedicinalPlant">
+    UPDATE medicinal_plant
+    <set>
+      <if test="name != null">name = #{name},</if>
+      <if test="alias != null">alias = #{alias},</if>
+      <if test="description != null">description = #{description},</if>
+      <if test="medicinalParts != null">medicinal_parts = #{medicinalParts},</if>
+      <if test="efficacy != null">efficacy = #{efficacy},</if>
+      <if test="imageUrl != null">image_url = #{imageUrl},</if>
+      updated_at = CURRENT_TIMESTAMP
+    </set>
+    WHERE id = #{id}
+  </update>
+
+  <!-- 删除药用植物 -->
+  <delete id="deleteById">
+    DELETE FROM medicinal_plant WHERE id = #{id}
+  </delete>
+
+  <!-- 批量删除药用植物 -->
+  <delete id="deleteByIds">
+    DELETE FROM medicinal_plant WHERE id IN
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+
+  <!-- 统计药用植物总数 -->
+  <select id="count" resultType="int">
+    SELECT COUNT(*) FROM medicinal_plant
+  </select>
+
+  <!-- 统计最近添加的药用植物数量 -->
+  <select id="countRecentAdded" resultType="int">
+    SELECT COUNT(*) FROM medicinal_plant
+    WHERE created_at >= DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 7 DAY)
+  </select>
+
+  <!-- 查询热门药用植物 -->
+  <select id="findTopPlants" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM medicinal_plant
+    ORDER BY created_at DESC
+    LIMIT 5
+  </select>
+
+  <!-- 查询最近添加的药用植物 -->
+  <select id="findRecentPlants" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM medicinal_plant
+    WHERE created_at >= DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 7 DAY)
+    ORDER BY created_at DESC
+  </select>
+
+  <!-- 统计指定专家创建的植物数量 -->
+  <select id="countByCreatedBy" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM medicinal_plant WHERE created_by = #{createdBy}
+  </select>
+
+  <!-- 增加查看次数 -->
+  <update id="incrementViewCount">
+    UPDATE medicinal_plant SET view_count = COALESCE(view_count, 0) + 1 WHERE id = #{id}
+  </update>
+</mapper>

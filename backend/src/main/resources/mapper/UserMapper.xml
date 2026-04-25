@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.medicinalplant.mapper.UserMapper">
+
+    <select id="findAdminByUsername" resultType="com.example.medicinalplant.entity.Admin">
+        SELECT * FROM admin WHERE username = #{username}
+    </select>
+    <select id="findExpertByUsername" resultType="com.example.medicinalplant.entity.ExpertUser">
+        SELECT * FROM expert_user WHERE username = #{username}
+    </select>
+    <select id="findNormalByUsername" resultType="com.example.medicinalplant.entity.NormalUser">
+        SELECT * FROM normal_user WHERE username = #{username}
+    </select>
+    <insert id="insertAdmin" parameterType="com.example.medicinalplant.entity.Admin">
+        INSERT INTO admin (username, password) VALUES (#{username}, #{password})
+    </insert>
+    <insert id="insertExpert" parameterType="com.example.medicinalplant.entity.ExpertUser">
+        INSERT INTO expert_user (username, password) VALUES (#{username}, #{password})
+    </insert>
+    <insert id="insertNormal" parameterType="com.example.medicinalplant.entity.NormalUser">
+        INSERT INTO normal_user (username, password) VALUES (#{username}, #{password})
+    </insert>
+    <select id="countExpertUsers" resultType="int">
+        SELECT COUNT(*) FROM expert_user
+    </select>
+    <select id="countNormalUsers" resultType="int">
+        SELECT COUNT(*) FROM normal_user
+    </select>
+    <select id="findAllExperts" resultType="com.example.medicinalplant.entity.ExpertUser">
+        SELECT * FROM expert_user
+    </select>
+    <select id="findAllNormalUsers" resultType="com.example.medicinalplant.entity.NormalUser">
+        SELECT * FROM normal_user
+    </select>
+</mapper>

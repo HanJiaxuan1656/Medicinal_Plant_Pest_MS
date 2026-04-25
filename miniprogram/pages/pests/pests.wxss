@@ -1,0 +1,347 @@
+/* 病虫害列表页面样式 */
+.container {
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* 搜索和筛选区域 */
+.search-filter-section {
+  background: #fff;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 搜索框 */
+.search-box {
+  position: relative;
+  margin-bottom: 30rpx;
+}
+
+.search-input {
+  width: 100%;
+  background: #f8f9fa;
+  border-radius: 50rpx;
+  padding: 24rpx 80rpx 24rpx 30rpx;
+  font-size: 28rpx;
+  color: #333;
+  border: 2rpx solid transparent;
+  transition: all 0.3s;
+}
+
+.search-input:focus {
+  border-color: #4CAF50;
+  background: #fff;
+  box-shadow: 0 0 0 4rpx rgba(76, 175, 80, 0.1);
+}
+
+.search-btn {
+  position: absolute;
+  right: 20rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60rpx;
+  height: 60rpx;
+  background: #4CAF50;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 28rpx;
+}
+
+/* 筛选滚动区域 */
+.filter-scroll {
+  margin-bottom: 30rpx;
+}
+
+.filter-list {
+  display: flex;
+  gap: 20rpx;
+  padding: 0 10rpx;
+}
+
+.filter-item {
+  flex-shrink: 0;
+  padding: 16rpx 32rpx;
+  background: #f0f0f0;
+  border-radius: 50rpx;
+  font-size: 26rpx;
+  color: #666;
+  transition: all 0.3s;
+}
+
+.filter-item.active {
+  background: #4CAF50;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* 排序区域 */
+.sort-section {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.sort-label {
+  font-size: 26rpx;
+  color: #666;
+  font-weight: 500;
+}
+
+.sort-options {
+  display: flex;
+  gap: 16rpx;
+}
+
+.sort-item {
+  padding: 12rpx 24rpx;
+  background: #f0f0f0;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  color: #666;
+  transition: all 0.3s;
+}
+
+.sort-item.active {
+  background: #e8f5e8;
+  color: #4CAF50;
+  font-weight: 500;
+}
+
+/* 病虫害列表 */
+.pests-list {
+  padding: 0 30rpx;
+}
+
+.pest-card {
+  background: #fff;
+  border-radius: 20rpx;
+  margin-bottom: 30rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+  transition: all 0.3s;
+}
+
+.pest-card:active {
+  transform: translateY(-2rpx);
+  box-shadow: 0 8rpx 30rpx rgba(0, 0, 0, 0.12);
+}
+
+.pest-image {
+  width: 100%;
+  height: 300rpx;
+  background: #f0f0f0;
+}
+
+.pest-content {
+  padding: 30rpx;
+}
+
+.pest-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.pest-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  flex: 1;
+  margin-right: 20rpx;
+}
+
+.pest-type {
+  flex-shrink: 0;
+}
+
+.type-tag {
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+
+.tag-danger {
+  background: #fef0f0;
+  color: #f56c6c;
+}
+
+.tag-warning {
+  background: #fdf6ec;
+  color: #e6a23c;
+}
+
+/* 病虫害信息 */
+.pest-info {
+  margin-bottom: 20rpx;
+}
+
+.info-row {
+  margin-bottom: 16rpx;
+  display: flex;
+  align-items: flex-start;
+  gap: 12rpx;
+}
+
+.info-row:last-child {
+  margin-bottom: 0;
+}
+
+.info-label {
+  font-size: 24rpx;
+  color: #666;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.info-content {
+  font-size: 24rpx;
+  color: #333;
+  line-height: 1.5;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.severity-level {
+  display: flex;
+  align-items: center;
+}
+
+.severity-tag {
+  padding: 6rpx 12rpx;
+  border-radius: 12rpx;
+  font-size: 20rpx;
+  font-weight: 500;
+}
+
+.severity-high {
+  background: #fef0f0;
+  color: #f56c6c;
+}
+
+.severity-medium {
+  background: #fdf6ec;
+  color: #e6a23c;
+}
+
+.severity-low {
+  background: #f0f9ff;
+  color: #409eff;
+}
+
+/* 病虫害底部 */
+.pest-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.pest-stats {
+  display: flex;
+  gap: 20rpx;
+}
+
+.stat-item {
+  font-size: 22rpx;
+  color: #999;
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.view-detail {
+  font-size: 24rpx;
+  color: #4CAF50;
+  font-weight: 500;
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 120rpx 40rpx;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  display: block;
+  margin-bottom: 30rpx;
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+  margin-bottom: 40rpx;
+}
+
+.retry-btn {
+  background: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 50rpx;
+  padding: 24rpx 48rpx;
+  font-size: 26rpx;
+}
+
+/* 加载更多 */
+.load-more {
+  padding: 40rpx;
+  text-align: center;
+}
+
+.load-more-btn {
+  background: #f0f0f0;
+  color: #666;
+  border: none;
+  border-radius: 50rpx;
+  padding: 24rpx 48rpx;
+  font-size: 26rpx;
+}
+
+/* 加载状态 */
+.loading {
+  text-align: center;
+  padding: 40rpx;
+  font-size: 26rpx;
+  color: #999;
+}
+
+/* 返回顶部 */
+.back-to-top {
+  position: fixed;
+  bottom: 120rpx;
+  right: 30rpx;
+  width: 80rpx;
+  height: 80rpx;
+  background: #4CAF50;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 20rpx rgba(76, 175, 80, 0.3);
+  opacity: 0;
+  transform: translateY(20rpx);
+  transition: all 0.3s;
+  z-index: 100;
+}
+
+.back-to-top.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.back-icon {
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: bold;
+}

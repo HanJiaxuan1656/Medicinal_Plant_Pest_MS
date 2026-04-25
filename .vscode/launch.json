@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-MedicinalPlantApplication<medicinal-plant>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.example.medicinalplant.MedicinalPlantApplication",
+      "projectName": "medicinal-plant",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

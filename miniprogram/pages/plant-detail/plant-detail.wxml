@@ -1,0 +1,172 @@
+<!-- 植物详情页面 -->
+<view class="container" wx:if="{{plant}}">
+  <!-- 植物图片 -->
+  <view class="image-section">
+    <image class="plant-image" 
+           src="{{plant.imageUrl}}" 
+           mode="aspectFill"
+           bindtap="previewImage"></image>
+    <view class="image-overlay">
+      <text class="plant-name">{{plant.name}}</text>
+      <text class="plant-alias" wx:if="{{plant.alias}}">{{plant.alias}}</text>
+    </view>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="info-section">
+    <view class="info-card">
+      <view class="card-header">
+        <text class="card-title">基本信息</text>
+        <view class="view-count">
+          <text class="count-icon">👁</text>
+          <text class="count-text">{{plant.viewCount || 0}}</text>
+        </view>
+      </view>
+      
+      <view class="info-item" wx:if="{{plant.medicinalParts}}">
+        <text class="info-label">药用部位</text>
+        <view class="parts-container">
+          <text class="part-tag" wx:for="{{plant.medicinalPartsArray}}" wx:key="*this">
+            {{item}}
+          </text>
+        </view>
+      </view>
+
+      <view class="info-item" wx:if="{{plant.efficacy}}">
+        <text class="info-label">主要功效</text>
+        <text class="info-content">{{plant.efficacy}}</text>
+      </view>
+
+      <view class="info-item" wx:if="{{plant.description}}">
+        <text class="info-label">详细描述</text>
+        <text class="info-content description">{{plant.description}}</text>
+      </view>
+
+      <view class="info-item" wx:if="{{plant.creator}}">
+        <text class="info-label">专家信息</text>
+        <view class="expert-info">
+          <image class="expert-avatar" src="{{plant.creator.avatarUrl}}" mode="aspectFill"></image>
+          <view class="expert-details">
+            <text class="expert-name">{{plant.creator.name}}</text>
+            <text class="expert-title">{{plant.creator.title}} · {{plant.creator.organization}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 相关病虫害 -->
+  <view class="related-section" wx:if="{{relatedDiseases.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">相关病虫害</text>
+      <text class="section-count">({{relatedDiseases.length}})</text>
+    </view>
+    
+    <view class="disease-list">
+      <view class="disease-item" 
+            wx:for="{{relatedDiseases}}" 
+            wx:key="id"
+            bindtap="goToPestDetail"
+            data-id="{{item.id}}">
+        <view class="disease-image-container">
+          <image wx:if="{{item.imageUrl}}"
+                 class="disease-image"
+                 src="{{item.imageUrl}}"
+                 mode="aspectFill"
+                 binderror="onDiseaseImageError"
+                 data-index="{{index}}"></image>
+          <view wx:else class="disease-image disease-image-placeholder">
+            <text class="placeholder-icon">🐛</text>
+          </view>
+        </view>
+        <view class="disease-info">
+          <text class="disease-name">{{item.name}}</text>
+          <view class="disease-meta">
+            <text class="disease-type tag {{item.type === '病害' ? 'tag-danger' : 'tag-warning'}}">
+              {{item.type}}
+            </text>
+            <text class="vulnerability tag tag-info">
+              易感性：{{item.vulnerability || '中'}}
+            </text>
+          </view>
+          <text class="disease-desc">{{item.symptoms}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 评论区域 -->
+  <view class="comment-section">
+    <view class="section-header">
+      <text class="section-title">用户评论</text>
+      <text class="section-count">({{comments.length}})</text>
+    </view>
+
+    <!-- 发表评论 -->
+    <view class="comment-form" wx:if="{{userInfo}}">
+      <view class="form-header">
+        <image class="user-avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+        <text class="user-name">{{userInfo.nickname || userInfo.username}}</text>
+      </view>
+      <textarea class="comment-input" 
+                placeholder="分享你对这个植物的了解..." 
+                value="{{commentContent}}"
+                bindinput="onCommentInput"
+                maxlength="500"></textarea>
+      <view class="form-footer">
+        <text class="char-count">{{commentContent.length}}/500</text>
+        <button class="submit-btn"
+                bindtap="submitComment"
+                disabled="{{!isCommentValid}}">
+          发表评论
+        </button>
+      </view>
+    </view>
+
+    <!-- 登录提示 -->
+    <view class="login-tip" wx:else>
+      <text class="tip-text">登录后可发表评论</text>
+      <button class="login-btn" bindtap="goToLogin">立即登录</button>
+    </view>
+
+    <!-- 评论列表 -->
+    <view class="comment-list" wx:if="{{comments.length > 0}}">
+      <view class="comment-item" wx:for="{{comments}}" wx:key="id">
+        <view class="comment-header">
+          <image class="commenter-avatar" src="{{item.avatarUrl}}" mode="aspectFill"></image>
+          <view class="commenter-info">
+            <text class="commenter-name">{{item.nickname || item.username}}</text>
+            <text class="comment-time">{{item.createdAt}}</text>
+          </view>
+          <view class="user-type" wx:if="{{item.userType === 'expert'}}">
+            <text class="expert-badge">专家</text>
+          </view>
+        </view>
+        <text class="comment-content">{{item.content}}</text>
+      </view>
+    </view>
+
+    <!-- 评论空状态 -->
+    <view class="empty-comments" wx:else>
+      <text class="empty-icon">💬</text>
+      <text class="empty-text">暂无评论，快来发表第一条评论吧！</text>
+    </view>
+  </view>
+</view>
+
+<!-- 加载状态 -->
+<view class="loading-container" wx:if="{{loading}}">
+  <text class="loading-text">加载中...</text>
+</view>
+
+<!-- 底部操作栏 -->
+<view class="bottom-actions">
+  <button class="action-btn secondary" bindtap="addToFavorites">
+    <text class="btn-icon">⭐</text>
+    <text class="btn-text">收藏</text>
+  </button>
+  <button class="action-btn primary" bindtap="shareToFriend">
+    <text class="btn-icon">📤</text>
+    <text class="btn-text">分享</text>
+  </button>
+</view>

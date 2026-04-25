@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.medicinalplant.mapper.HelpRequestMapper">
+  <!-- 查询所有求助 -->
+  <select id="findAll" resultType="com.example.medicinalplant.entity.HelpRequest">
+    SELECT * FROM help_request
+  </select>
+  <!-- 查询用户的求助列表 -->
+  <select id="findByUserId" resultType="com.example.medicinalplant.entity.HelpRequest">
+    SELECT * FROM help_request WHERE user_id = #{userId}
+  </select>
+  <!-- 根据ID查询求助 -->
+  <select id="findById" resultType="com.example.medicinalplant.entity.HelpRequest">
+    SELECT * FROM help_request WHERE id = #{id}
+  </select>
+  <!-- 根据状态查询求助列表 -->
+  <select id="findByStatus" resultType="com.example.medicinalplant.entity.HelpRequest">
+    SELECT * FROM help_request WHERE status = #{status}
+  </select>
+  <!-- 插入求助 -->
+  <insert id="insert" parameterType="com.example.medicinalplant.entity.HelpRequest" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO help_request (user_id, title, description, image_url, status, created_at)
+    VALUES (#{userId}, #{title}, #{description}, #{imageUrl}, #{status}, #{createdAt})
+  </insert>
+  <!-- 更新求助 -->
+  <update id="update" parameterType="com.example.medicinalplant.entity.HelpRequest">
+    UPDATE help_request
+    SET user_id = #{userId}, title = #{title}, description = #{description}, image_url = #{imageUrl}, status = #{status}, created_at = #{createdAt}, review_admin_id = #{reviewAdminId}
+    WHERE id = #{id}
+  </update>
+  <!-- 根据ID删除求助 -->
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    DELETE FROM help_request WHERE id = #{id}
+  </delete>
+  <!-- 查询求助的回复列表 -->
+  <select id="findRepliesByHelpId" resultType="com.example.medicinalplant.entity.HelpReply">
+    SELECT * FROM help_reply WHERE help_id = #{helpId}
+  </select>
+  <!-- 插入求助回复 -->
+  <insert id="insertReply" parameterType="com.example.medicinalplant.entity.HelpReply" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO help_reply (help_id, expert_id, content, created_at)
+    VALUES (#{helpId}, #{expertId}, #{content}, #{createdAt})
+  </insert>
+  <!-- 根据状态统计求助数量 -->
+  <select id="countByStatus" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM help_request WHERE status = #{status}
+  </select>
+
+  <!-- 统计指定专家回复的求助数量 -->
+  <select id="countRepliedByExpert" resultType="java.lang.Integer">
+    SELECT COUNT(DISTINCT hr.help_id)
+    FROM help_reply hr
+    WHERE hr.expert_id = #{expertId}
+  </select>
+
+  <!-- 根据用户ID统计求助数量 -->
+  <select id="countByUserId" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM help_request WHERE user_id = #{userId}
+  </select>
+
+  <!-- 统计总求助数量 -->
+  <select id="countTotal" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM help_request
+  </select>
+
+  <!-- 按日期统计求助数量 -->
+  <select id="countByDate" resultType="java.util.Map">
+    SELECT DATE(created_at) as date, COUNT(*) as count
+    FROM help_request
+    WHERE created_at >= DATE_SUB(NOW(), INTERVAL #{days} DAY)
+    GROUP BY DATE(created_at)
+    ORDER BY date
+  </select>
+</mapper>

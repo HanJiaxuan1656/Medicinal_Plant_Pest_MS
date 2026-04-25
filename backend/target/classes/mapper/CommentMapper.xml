@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.medicinalplant.mapper.CommentMapper">
+    
+    <resultMap id="commentMap" type="com.example.medicinalplant.entity.Comment">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="userType" column="user_type"/>
+        <result property="targetType" column="target_type"/>
+        <result property="targetId" column="target_id"/>
+        <result property="content" column="content"/>
+        <result property="status" column="status"/>
+        <result property="reviewAdminId" column="review_admin_id"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+    
+    <select id="findByTargetTypeAndTargetId" resultMap="commentMap">
+        SELECT * FROM comment
+        WHERE target_type = #{targetType} AND target_id = #{targetId}
+        ORDER BY created_at DESC
+    </select>
+    
+    <select id="findById" resultMap="commentMap">
+        SELECT * FROM comment WHERE id = #{id}
+    </select>
+    
+    <select id="findByStatus" resultMap="commentMap">
+        SELECT * FROM comment WHERE status = #{status}
+        ORDER BY created_at DESC
+    </select>
+    
+    <select id="countByStatus" resultType="int">
+        SELECT COUNT(*) FROM comment WHERE status = #{status}
+    </select>
+
+    <select id="countByUserId" resultType="int">
+        SELECT COUNT(*) FROM comment WHERE user_id = #{userId}
+    </select>
+
+    <select id="countTotal" resultType="int">
+        SELECT COUNT(*) FROM comment
+    </select>
+
+    <select id="countByDate" resultType="java.util.Map">
+        SELECT DATE(created_at) as date, COUNT(*) as count
+        FROM comment
+        WHERE created_at >= DATE_SUB(NOW(), INTERVAL #{days} DAY)
+        GROUP BY DATE(created_at)
+        ORDER BY date
+    </select>
+
+    <insert id="insert" parameterType="com.example.medicinalplant.entity.Comment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO comment (
+            user_id, user_type, target_type, target_id, 
+            content, status, review_admin_id, created_at
+        ) VALUES (
+            #{userId}, #{userType}, #{targetType}, #{targetId}, 
+            #{content}, #{status}, #{reviewAdminId}, #{createdAt}
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.example.medicinalplant.entity.Comment">
+        UPDATE comment
+        SET user_id = #{userId},
+            user_type = #{userType},
+            target_type = #{targetType},
+            target_id = #{targetId},
+            content = #{content},
+            status = #{status},
+            review_admin_id = #{reviewAdminId}
+        WHERE id = #{id}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM comment WHERE id = #{id}
+    </delete>
+    
+</mapper> 

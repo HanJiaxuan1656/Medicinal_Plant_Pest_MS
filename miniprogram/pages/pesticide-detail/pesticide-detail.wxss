@@ -1,0 +1,568 @@
+/* 农药详情页面样式 */
+.container {
+  padding-bottom: 120rpx;
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* 图片区域 */
+.image-section {
+  position: relative;
+  height: 500rpx;
+  overflow: hidden;
+}
+
+.pesticide-image {
+  width: 100%;
+  height: 100%;
+}
+
+.pesticide-image-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+}
+
+.placeholder-icon {
+  font-size: 80rpx;
+  margin-bottom: 16rpx;
+}
+
+.placeholder-text {
+  font-size: 24rpx;
+}
+
+.image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  padding: 60rpx 30rpx 30rpx;
+  color: #fff;
+}
+
+.pesticide-name {
+  font-size: 36rpx;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.pesticide-category {
+  font-size: 26rpx;
+  opacity: 0.8;
+}
+
+/* 信息区域 */
+.info-section {
+  padding: 30rpx;
+}
+
+.info-card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.view-count {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  color: #666;
+  font-size: 24rpx;
+}
+
+.count-icon {
+  font-size: 28rpx;
+}
+
+/* 信息项 */
+.info-item {
+  margin-bottom: 30rpx;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+.info-label {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.info-content {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+.info-content.description {
+  line-height: 1.8;
+}
+
+/* 类别标签 */
+.category-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.category-tag {
+  padding: 12rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+}
+
+.tag-warning {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.tag-danger {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.tag-success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.tag-info {
+  background: #e6f7ff;
+  color: #1890ff;
+}
+
+/* 安全等级标签 */
+.safety-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.safety-tag {
+  padding: 12rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+}
+
+.safety-low {
+  background: #d4edda;
+  color: #155724;
+}
+
+.safety-medium {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.safety-high {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* 专家信息 */
+.expert-info {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.expert-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+}
+
+.expert-details {
+  flex: 1;
+}
+
+.expert-name {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  display: block;
+  margin-bottom: 6rpx;
+}
+
+.expert-title {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 使用方法区域 */
+.usage-section {
+  padding: 0 30rpx 30rpx;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.section-count {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.usage-list {
+  background: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.usage-item {
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.usage-item:last-child {
+  border-bottom: none;
+}
+
+.usage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16rpx;
+}
+
+.usage-title {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  flex: 1;
+  margin-right: 20rpx;
+}
+
+.usage-dosage {
+  font-size: 24rpx;
+  color: #4CAF50;
+  font-weight: 500;
+  background: #e8f5e8;
+  padding: 6rpx 12rpx;
+  border-radius: 12rpx;
+}
+
+.usage-description {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 16rpx;
+}
+
+.usage-notes {
+  background: #fff3cd;
+  padding: 16rpx;
+  border-radius: 12rpx;
+  border-left: 4rpx solid #ffc107;
+}
+
+.notes-label {
+  font-size: 24rpx;
+  color: #856404;
+  font-weight: 500;
+}
+
+.notes-content {
+  font-size: 24rpx;
+  color: #856404;
+  line-height: 1.5;
+  margin-left: 8rpx;
+}
+
+/* 评论区域 */
+.comment-section {
+  padding: 0 30rpx 30rpx;
+}
+
+/* 评论表单 */
+.comment-form {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.form-header {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.user-avatar {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+}
+
+.user-name {
+  font-size: 26rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.comment-input {
+  width: 100%;
+  min-height: 120rpx;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  font-size: 26rpx;
+  color: #333;
+  line-height: 1.5;
+  margin-bottom: 20rpx;
+}
+
+.form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.char-count {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.submit-btn {
+  background: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 50rpx;
+  padding: 16rpx 32rpx;
+  font-size: 26rpx;
+}
+
+.submit-btn[disabled] {
+  background: #ccc;
+}
+
+/* 登录提示 */
+.login-tip {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  text-align: center;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.tip-text {
+  font-size: 26rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.login-btn {
+  background: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 50rpx;
+  padding: 20rpx 40rpx;
+  font-size: 26rpx;
+}
+
+/* 评论列表 */
+.comment-list {
+  background: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.comment-item {
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.comment-item:last-child {
+  border-bottom: none;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.commenter-avatar {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+}
+
+.commenter-info {
+  flex: 1;
+}
+
+.commenter-name {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #333;
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.comment-time {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.user-type {
+  flex-shrink: 0;
+}
+
+.expert-badge {
+  background: #4CAF50;
+  color: #fff;
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+  font-size: 20rpx;
+}
+
+.comment-content {
+  font-size: 26rpx;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* 评论空状态 */
+.empty-comments {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 80rpx 40rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 26rpx;
+  color: #999;
+}
+
+/* 底部操作栏 */
+.bottom-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 20rpx 30rpx;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 20rpx;
+  z-index: 100;
+}
+
+.action-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  padding: 24rpx;
+  border-radius: 50rpx;
+  font-size: 28rpx;
+  border: none;
+}
+
+.action-btn.primary {
+  background: #4CAF50;
+  color: #fff;
+}
+
+.action-btn.secondary {
+  background: #f0f0f0;
+  color: #666;
+}
+
+.btn-icon {
+  font-size: 32rpx;
+}
+
+/* 加载状态 */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #f5f5f5;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 调试信息 */
+.debug-info {
+  margin: 30rpx;
+  padding: 20rpx;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+  border: 1rpx solid #e9ecef;
+}
+
+.debug-title {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 12rpx;
+}
+
+.debug-content {
+  font-size: 20rpx;
+  color: #333;
+  line-height: 1.4;
+  word-break: break-all;
+  display: block;
+  margin-bottom: 8rpx;
+}

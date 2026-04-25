@@ -1,0 +1,247 @@
+/* 创建求助页面样式 */
+.container {
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+.form-container {
+  padding: 30rpx;
+}
+
+/* 页面标题 */
+.page-header {
+  text-align: center;
+  margin-bottom: 50rpx;
+}
+
+.page-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.page-subtitle {
+  font-size: 26rpx;
+  color: #666;
+}
+
+/* 表单区域 */
+.form-section {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.form-item {
+  margin-bottom: 40rpx;
+}
+
+.form-item:last-child {
+  margin-bottom: 0;
+}
+
+.form-label {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.form-tip {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 20rpx;
+  line-height: 1.4;
+}
+
+/* 输入框 */
+.form-input {
+  width: 100%;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  color: #333;
+  border: 2rpx solid transparent;
+  transition: all 0.3s;
+}
+
+.form-input:focus {
+  border-color: #4CAF50;
+  background: #fff;
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 200rpx;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.5;
+  border: 2rpx solid transparent;
+  transition: all 0.3s;
+}
+
+.form-textarea:focus {
+  border-color: #4CAF50;
+  background: #fff;
+}
+
+.char-count {
+  text-align: right;
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 12rpx;
+}
+
+/* 图片上传区域 */
+.image-upload-area {
+  margin-top: 20rpx;
+}
+
+.uploaded-image-container {
+  position: relative;
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 20rpx;
+}
+
+.uploaded-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 12rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+}
+
+.image-delete {
+  position: absolute;
+  top: -10rpx;
+  right: -10rpx;
+  width: 40rpx;
+  height: 40rpx;
+  background: #ff4757;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2rpx 8rpx rgba(255, 71, 87, 0.3);
+  transition: all 0.3s;
+}
+
+.image-delete:active {
+  transform: scale(0.9);
+}
+
+.delete-icon {
+  color: #fff;
+  font-size: 24rpx;
+  font-weight: bold;
+}
+
+.upload-btn {
+  width: 200rpx;
+  height: 200rpx;
+  border: 2rpx dashed #ddd;
+  border-radius: 12rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+  transition: all 0.3s;
+}
+
+.upload-btn:active {
+  border-color: #4CAF50;
+  background: #f0f8f0;
+}
+
+.upload-icon {
+  font-size: 48rpx;
+  color: #999;
+  margin-bottom: 12rpx;
+}
+
+.upload-text {
+  font-size: 24rpx;
+  color: #666;
+  margin-bottom: 8rpx;
+}
+
+.upload-limit {
+  font-size: 20rpx;
+  color: #999;
+}
+
+
+
+/* 提交区域 */
+.submit-section {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.submit-btn {
+  width: 100%;
+  background: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 50rpx;
+  padding: 32rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  margin-bottom: 30rpx;
+}
+
+.submit-btn[disabled] {
+  background: #ccc;
+  color: #999;
+}
+
+.submit-tips {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.tip-item {
+  font-size: 24rpx;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* 加载遮罩 */
+.loading-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.loading-content {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 60rpx;
+  text-align: center;
+  min-width: 300rpx;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #333;
+}

@@ -1,0 +1,153 @@
+<!-- 求助详情页面 -->
+<view class="container">
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 求助详情内容 -->
+  <view wx:else class="help-detail">
+    <!-- 求助头部信息 -->
+    <view class="help-header">
+      <view class="help-title-section">
+        <text class="help-title">{{helpRequest.title}}</text>
+        <view class="help-meta">
+          <view class="status-tag {{helpRequest.status === 'approved' ? 'status-approved' : helpRequest.status === 'pending' ? 'status-pending' : 'status-rejected'}}">
+            <text class="status-text">{{helpRequest.statusText}}</text>
+          </view>
+          <view class="time-info">
+            <text class="time-icon">🕒</text>
+            <text class="time-text">{{helpRequest.timeText}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="help-stats">
+        <view class="stat-item">
+          <text class="stat-number">{{replies.length}}</text>
+          <text class="stat-label">回复</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 求助内容 -->
+    <view class="help-content">
+      <view class="content-section">
+        <view class="section-title">
+          <text class="title-icon">📝</text>
+          <text class="title-text">问题描述</text>
+        </view>
+        <text class="help-description">{{helpRequest.description}}</text>
+
+        <!-- 图片展示 -->
+        <view class="help-images" wx:if="{{helpRequest.imageUrl}}">
+          <view class="section-title">
+            <text class="title-icon">🖼️</text>
+            <text class="title-text">相关图片</text>
+          </view>
+          <view class="image-gallery">
+            <image class="help-image"
+                   src="{{helpRequest.imageUrl}}"
+                   mode="aspectFill"
+                   bindtap="previewImage"
+                   data-url="{{helpRequest.imageUrl}}"></image>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 专家回复区域 -->
+    <view class="replies-section">
+      <view class="section-header">
+        <view class="section-title">
+          <text class="title-icon">💬</text>
+          <text class="title-text">专家回复 ({{replies.length}})</text>
+        </view>
+        <view class="refresh-btn" bindtap="refreshReplies" wx:if="{{helpRequest.status === 'pending'}}">
+          <text class="refresh-icon">🔄</text>
+          <text class="refresh-text">刷新</text>
+        </view>
+      </view>
+
+      <!-- 回复列表 -->
+      <view class="replies-list" wx:if="{{replies.length > 0}}">
+        <view class="reply-item" wx:for="{{replies}}" wx:key="id">
+          <view class="reply-header">
+            <view class="expert-info">
+              <view class="expert-avatar">
+                <image wx:if="{{item.expertAvatar}}"
+                       class="avatar-image"
+                       src="{{item.expertAvatar}}"
+                       mode="aspectFill"
+                       binderror="onExpertAvatarError"
+                       data-index="{{index}}"></image>
+                <view wx:else class="avatar-placeholder">
+                  <text class="avatar-text">{{item.expertName ? item.expertName.charAt(0) : '专'}}</text>
+                </view>
+              </view>
+              <view class="expert-details">
+                <text class="expert-name">{{item.expertName || '专家'}}</text>
+                <text class="expert-title">{{item.expertTitle || '植物专家'}}</text>
+              </view>
+            </view>
+            <view class="reply-time">
+              <text class="time-text">{{item.timeText}}</text>
+            </view>
+          </view>
+
+          <view class="reply-content">
+            <text class="reply-text">{{item.content}}</text>
+
+            <!-- 回复图片 -->
+            <view class="reply-images" wx:if="{{item.imageUrl}}">
+              <image class="reply-image"
+                     src="{{item.imageUrl}}"
+                     mode="aspectFill"
+                     bindtap="previewImage"
+                     data-url="{{item.imageUrl}}"></image>
+            </view>
+          </view>
+
+          <view class="reply-footer">
+            <view class="thank-btn {{item.isThanked ? 'thanked' : ''}}"
+                  bindtap="thankReply"
+                  data-id="{{item.id}}"
+                  wx:if="{{isMyHelp}}">
+              <text class="thank-icon">{{item.isThanked ? '✅' : '⭐'}}</text>
+              <text class="thank-text">{{item.isThanked ? '已感谢' : '感谢专家'}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 无回复状态 -->
+      <view class="no-replies" wx:else>
+        <view class="no-replies-icon">💭</view>
+        <text class="no-replies-text">暂无专家回复，请耐心等待</text>
+        <text class="no-replies-tip">专家会尽快为您解答问题</text>
+      </view>
+    </view>
+
+    <!-- 操作按钮区域 -->
+    <view class="action-section" wx:if="{{isMyHelp}}">
+      <button class="action-btn resolve-btn"
+              wx:if="{{helpRequest.status === 'replied'}}"
+              bindtap="markAsResolved"
+              disabled="{{resolving}}">
+        <text wx:if="{{resolving}}">标记中...</text>
+        <text wx:else>✅ 标记为已解决</text>
+      </button>
+
+      <button class="action-btn delete-btn"
+              bindtap="deleteHelp"
+              disabled="{{deleting}}">
+        <text wx:if="{{deleting}}">删除中...</text>
+        <text wx:else>🗑️ 删除求助</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 底部安全区域 -->
+  <view class="safe-area-bottom"></view>
+</view>

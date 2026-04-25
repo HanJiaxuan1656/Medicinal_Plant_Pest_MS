@@ -1,0 +1,141 @@
+<!-- 农药列表页面 -->
+<view class="container" bindtap="closeDropdown">
+  <!-- 搜索栏 -->
+  <view class="search-section">
+    <view class="search-bar">
+      <view class="search-input-container">
+        <input class="search-input"
+               placeholder="搜索农药名称..."
+               value="{{searchKeyword}}"
+               bindinput="onSearchInput"
+               bindconfirm="onSearch" />
+        <view class="search-icon" bindtap="onSearch">🔍</view>
+      </view>
+    </view>
+
+    <!-- 筛选器 -->
+    <view class="filter-section">
+      <view class="filter-item-wrapper">
+        <text class="filter-label">农药类别：</text>
+        <view class="dropdown-container" catchtap="stopPropagation">
+          <view class="dropdown-trigger" bindtap="toggleDropdown">
+            <text class="dropdown-text">{{selectedCategoryText}}</text>
+            <text class="dropdown-arrow {{dropdownOpen ? 'open' : ''}}">▼</text>
+          </view>
+
+          <!-- 下拉选项 -->
+          <view class="dropdown-options {{dropdownOpen ? 'show' : ''}}" catchtap="stopPropagation">
+            <view class="dropdown-option {{selectedCategory === '' ? 'active' : ''}}"
+                  bindtap="onCategorySelect"
+                  data-value=""
+                  data-text="全部">
+              全部
+            </view>
+            <view class="dropdown-option {{selectedCategory === item ? 'active' : ''}}"
+                  wx:for="{{pesticideCategories}}"
+                  wx:key="*this"
+                  bindtap="onCategorySelect"
+                  data-value="{{item}}"
+                  data-text="{{item}}">
+              {{item}}
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 排序选项 -->
+    <view class="sort-section">
+      <view class="sort-item {{sortBy === 'latest' ? 'active' : ''}}"
+            bindtap="selectSort" data-sort="latest">
+        最新
+      </view>
+      <view class="sort-item {{sortBy === 'popular' ? 'active' : ''}}"
+            bindtap="selectSort" data-sort="popular">
+        热门
+      </view>
+      <view class="sort-item {{sortBy === 'name' ? 'active' : ''}}"
+            bindtap="selectSort" data-sort="name">
+        名称
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading && pesticides.length === 0}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 农药列表 -->
+  <view class="pesticides-list" wx:if="{{!loading && pesticides.length > 0}}">
+    <view class="pesticide-card"
+          wx:for="{{pesticides}}"
+          wx:key="id"
+          bindtap="goToDetail"
+          data-id="{{item.id}}">
+      <view class="pesticide-image-container">
+        <image class="pesticide-image"
+               src="{{item.imageUrl}}"
+               mode="aspectFill"
+               lazy-load
+               binderror="onImageError"
+               data-index="{{index}}"></image>
+        <view class="category-badge {{item.category === '杀虫剂' ? 'badge-warning' : item.category === '杀菌剂' ? 'badge-danger' : item.category === '除草剂' ? 'badge-success' : 'badge-info'}}">
+          {{item.category || '未分类'}}
+        </view>
+      </view>
+
+      <view class="pesticide-content">
+        <view class="pesticide-header">
+          <text class="pesticide-name">{{item.name}}</text>
+          <view class="pesticide-stats">
+            <text class="view-count">👁 {{item.viewCount || 0}}</text>
+          </view>
+        </view>
+
+        <view class="pesticide-ingredient" wx:if="{{item.activeIngredient}}">
+          <text class="ingredient-label">有效成分：</text>
+          <text class="ingredient-text">{{item.activeIngredient}}</text>
+        </view>
+
+        <view class="pesticide-description" wx:if="{{item.usageInstructions}}">
+          <text class="description-text">{{item.usageInstructions}}</text>
+        </view>
+
+        <view class="pesticide-footer">
+          <text class="create-time">{{item.createdAt}}</text>
+          <view class="action-hint">
+            <text class="hint-text">点击查看详情</text>
+            <text class="arrow">→</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-container" wx:if="{{!loading && pesticides.length === 0}}">
+    <view class="empty-icon">🧪</view>
+    <text class="empty-text">暂无农药信息</text>
+    <text class="empty-tip">{{searchKeyword ? '尝试搜索其他关键词' : '暂时没有农药数据'}}</text>
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="load-more" wx:if="{{hasMore && !loading}}">
+    <view class="load-more-btn" bindtap="loadMore">
+      <text class="load-more-text">加载更多</text>
+    </view>
+  </view>
+
+  <!-- 底部加载状态 -->
+  <view class="bottom-loading" wx:if="{{loading && pesticides.length > 0}}">
+    <view class="loading-spinner small"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 没有更多数据 -->
+  <view class="no-more" wx:if="{{!hasMore && pesticides.length > 0}}">
+    <text class="no-more-text">没有更多数据了</text>
+  </view>
+</view>

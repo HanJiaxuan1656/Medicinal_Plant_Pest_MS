@@ -1,0 +1,326 @@
+/* 求助中心页面样式 */
+.container {
+  background: #f5f5f5;
+  min-height: 100vh;
+  padding-bottom: 120rpx;
+}
+
+/* 顶部操作区 */
+.header-section {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  padding: 40rpx 30rpx;
+  color: #fff;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-info {
+  flex: 1;
+}
+
+.page-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.page-desc {
+  font-size: 24rpx;
+  opacity: 0.8;
+}
+
+.create-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: 2rpx solid rgba(255, 255, 255, 0.3);
+  border-radius: 50rpx;
+  padding: 20rpx 32rpx;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.btn-icon {
+  font-size: 28rpx;
+}
+
+.btn-text {
+  font-size: 24rpx;
+}
+
+/* 筛选区域 */
+.filter-section {
+  background: #fff;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.filter-scroll {
+  width: 100%;
+}
+
+.filter-list {
+  display: flex;
+  gap: 20rpx;
+  padding: 0 10rpx;
+}
+
+.filter-item {
+  flex-shrink: 0;
+  padding: 16rpx 32rpx;
+  background: #f0f0f0;
+  border-radius: 50rpx;
+  font-size: 26rpx;
+  color: #666;
+  transition: all 0.3s;
+}
+
+.filter-item.active {
+  background: #4CAF50;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* 求助列表 */
+.help-list {
+  padding: 0 30rpx;
+}
+
+.help-card {
+  background: #fff;
+  border-radius: 20rpx;
+  margin-bottom: 30rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+  transition: all 0.3s;
+}
+
+.help-card:active {
+  transform: translateY(-2rpx);
+  box-shadow: 0 8rpx 30rpx rgba(0, 0, 0, 0.12);
+}
+
+/* 求助头部 */
+.help-header {
+  margin-bottom: 20rpx;
+}
+
+.help-title-area {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.help-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  flex: 1;
+  margin-right: 20rpx;
+  line-height: 1.4;
+}
+
+.help-status {
+  flex-shrink: 0;
+}
+
+.status-tag {
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+
+.status-pending {
+  background: #fdf6ec;
+  color: #e6a23c;
+}
+
+.status-approved {
+  background: #f0f9ff;
+  color: #409eff;
+}
+
+.status-replied {
+  background: #f0f8f0;
+  color: #67c23a;
+}
+
+.help-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.user-avatar {
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 50%;
+  background: #f0f0f0;
+}
+
+.user-name {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.help-time {
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* 求助内容 */
+.help-content {
+  margin-bottom: 20rpx;
+}
+
+.help-description {
+  font-size: 26rpx;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 16rpx;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.help-images {
+  margin-top: 16rpx;
+}
+
+.help-image {
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 12rpx;
+  background: #f0f0f0;
+}
+
+/* 求助底部 */
+.help-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.help-stats {
+  display: flex;
+  gap: 20rpx;
+}
+
+.stat-item {
+  font-size: 22rpx;
+  color: #999;
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.help-actions {
+  display: flex;
+  align-items: center;
+}
+
+.action-text {
+  font-size: 24rpx;
+  color: #4CAF50;
+  font-weight: 500;
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 120rpx 40rpx;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  display: block;
+  margin-bottom: 30rpx;
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+  margin-bottom: 40rpx;
+}
+
+.create-help-btn {
+  background: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 50rpx;
+  padding: 24rpx 48rpx;
+  font-size: 26rpx;
+}
+
+/* 加载更多 */
+.load-more {
+  padding: 40rpx;
+  text-align: center;
+}
+
+.load-more-btn {
+  background: #f0f0f0;
+  color: #666;
+  border: none;
+  border-radius: 50rpx;
+  padding: 24rpx 48rpx;
+  font-size: 26rpx;
+}
+
+/* 加载状态 */
+.loading {
+  text-align: center;
+  padding: 40rpx;
+  font-size: 26rpx;
+  color: #999;
+}
+
+/* 悬浮按钮 */
+.fab-container {
+  position: fixed;
+  bottom: 30rpx;
+  right: 30rpx;
+  z-index: 100;
+}
+
+.fab-btn {
+  width: 100rpx;
+  height: 100rpx;
+  background: #4CAF50;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6rpx 20rpx rgba(76, 175, 80, 0.4);
+  transition: all 0.3s;
+}
+
+.fab-btn:active {
+  transform: scale(0.95);
+}
+
+.fab-icon {
+  color: #fff;
+  font-size: 40rpx;
+  font-weight: bold;
+}

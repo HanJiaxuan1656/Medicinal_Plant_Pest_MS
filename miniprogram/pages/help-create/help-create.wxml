@@ -1,0 +1,90 @@
+<!-- 创建求助页面 -->
+<view class="container">
+  <view class="form-container">
+    <!-- 页面标题 -->
+    <view class="page-header">
+      <text class="page-title">发起求助</text>
+      <text class="page-subtitle">向专家寻求帮助，解决植物问题</text>
+    </view>
+
+    <!-- 求助表单 -->
+    <view class="form-section">
+      <!-- 求助标题 -->
+      <view class="form-item">
+        <text class="form-label">求助标题 *</text>
+        <input class="form-input"
+               placeholder="简要描述你遇到的问题"
+               value="{{formData.title}}"
+               bindinput="onTitleInput"
+               maxlength="50" />
+        <text class="char-count">{{formData.title.length}}/50</text>
+      </view>
+
+      <!-- 问题描述 -->
+      <view class="form-item">
+        <text class="form-label">问题描述 *</text>
+        <textarea class="form-textarea"
+                  placeholder="详细描述你遇到的问题，包括症状、发生时间、环境条件等信息，这将帮助专家更好地为你解答"
+                  value="{{formData.description}}"
+                  bindinput="onDescriptionInput"
+                  maxlength="500"
+                  auto-height></textarea>
+        <text class="char-count">{{formData.description.length}}/500</text>
+      </view>
+
+      <!-- 上传图片 -->
+      <view class="form-item">
+        <text class="form-label">上传图片</text>
+        <text class="form-tip">上传相关图片有助于专家更准确地诊断问题（可选）</text>
+
+        <view class="image-upload-area">
+          <!-- 已上传的图片 -->
+          <view class="uploaded-image-container" wx:if="{{uploadedImage}}">
+            <image class="uploaded-image"
+                   src="{{uploadedImage}}"
+                   mode="aspectFill"
+                   bindtap="previewImage"></image>
+            <view class="image-delete"
+                  bindtap="deleteImage">
+              <text class="delete-icon">×</text>
+            </view>
+          </view>
+
+          <!-- 上传按钮 -->
+          <view class="upload-btn"
+                wx:if="{{!uploadedImage}}"
+                bindtap="chooseImage">
+            <text class="upload-icon">📷</text>
+            <text class="upload-text">添加图片</text>
+            <text class="upload-limit">(最多1张)</text>
+          </view>
+        </view>
+      </view>
+
+
+    </view>
+
+    <!-- 提交按钮 -->
+    <view class="submit-section">
+      <button class="submit-btn"
+              bindtap="submitHelp"
+              disabled="{{!canSubmit || submitting}}">
+        <text wx:if="{{submitting}}">提交中...</text>
+        <text wx:else>发起求助</text>
+      </button>
+
+      <view class="submit-tips">
+        <text class="tip-item">• 求助提交后需要管理员审核</text>
+        <text class="tip-item">• 审核通过后专家将为你解答</text>
+        <text class="tip-item">• 请确保信息真实有效</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 加载遮罩 -->
+<view class="loading-mask" wx:if="{{uploading}}">
+  <view class="loading-content">
+    <text class="loading-text">上传中...</text>
+  </view>
+</view>

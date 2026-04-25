@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.medicinalplant.mapper.PlantDiseaseLinkMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="com.example.medicinalplant.entity.PlantDiseaseLink">
+        <id property="id" column="id"/>
+        <result property="plantId" column="plant_id"/>
+        <result property="pdId" column="pd_id"/>
+        <result property="vulnerability" column="vulnerability"/>
+        <result property="occurrenceSeason" column="occurrence_season"/>
+        <result property="affectedParts" column="affected_parts"/>
+        <result property="notes" column="notes"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <!-- 带关联对象的结果映射 -->
+    <resultMap id="DetailResultMap" type="com.example.medicinalplant.entity.PlantDiseaseLink" extends="BaseResultMap">
+        <association property="plant" javaType="com.example.medicinalplant.entity.MedicinalPlant">
+            <id property="id" column="plant_id"/>
+            <result property="name" column="plant_name"/>
+            <result property="alias" column="plant_alias"/>
+            <result property="imageUrl" column="plant_image_url"/>
+        </association>
+        <association property="pestDisease" javaType="com.example.medicinalplant.entity.PestDisease">
+            <id property="id" column="pd_id"/>
+            <result property="name" column="disease_name"/>
+            <result property="type" column="disease_type"/>
+            <result property="imageUrl" column="disease_image_url"/>
+        </association>
+        <association property="creator" javaType="com.example.medicinalplant.entity.ExpertUser">
+            <id property="id" column="created_by"/>
+            <result property="name" column="creator_name"/>
+        </association>
+    </resultMap>
+
+    <!-- 易感性统计结果映射 -->
+    <resultMap id="VulnerabilityCountResultMap" type="com.example.medicinalplant.mapper.PlantDiseaseLinkMapper$VulnerabilityCount">
+        <result property="vulnerability" column="vulnerability"/>
+        <result property="count" column="count"/>
+    </resultMap>
+
+    <!-- 分页查询关联关系 -->
+    <select id="selectPage" resultMap="DetailResultMap">
+        SELECT 
+            pdl.*,
+            mp.name as plant_name,
+            mp.alias as plant_alias,
+            mp.image_url as plant_image_url,
+            pd.name as disease_name,
+            pd.type as disease_type,
+            pd.image_url as disease_image_url,
+            eu.name as creator_name
+        FROM plant_disease_link pdl
+        LEFT JOIN medicinal_plant mp ON pdl.plant_id = mp.id
+        LEFT JOIN pest_disease pd ON pdl.pd_id = pd.id
+        LEFT JOIN expert_user eu ON pdl.created_by = eu.id
+        <where>
+            <if test="plantName != null and plantName != ''">
+                AND mp.name LIKE CONCAT('%', #{plantName}, '%')
+            </if>
+            <if test="diseaseName != null and diseaseName != ''">
+                AND pd.name LIKE CONCAT('%', #{diseaseName}, '%')
+            </if>
+            <if test="vulnerability != null and vulnerability != ''">
+                AND pdl.vulnerability = #{vulnerability}
+            </if>
+        </where>
+        ORDER BY pdl.created_at DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <!-- 统计查询结果数量 -->
+    <select id="selectCount" resultType="int">
+        SELECT COUNT(*)
+        FROM plant_disease_link pdl
+        LEFT JOIN medicinal_plant mp ON pdl.plant_id = mp.id
+        LEFT JOIN pest_disease pd ON pdl.pd_id = pd.id
+        <where>
+            <if test="plantName != null and plantName != ''">
+                AND mp.name LIKE CONCAT('%', #{plantName}, '%')
+            </if>
+            <if test="diseaseName != null and diseaseName != ''">
+                AND pd.name LIKE CONCAT('%', #{diseaseName}, '%')
+            </if>
+            <if test="vulnerability != null and vulnerability != ''">
+                AND pdl.vulnerability = #{vulnerability}
+            </if>
+        </where>
+    </select>
+
+    <!-- 插入关联关系 -->
+    <insert id="insert" parameterType="com.example.medicinalplant.entity.PlantDiseaseLink" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO plant_disease_link (plant_id, pd_id, vulnerability, occurrence_season, affected_parts, notes, created_by)
+        VALUES (#{plantId}, #{pdId}, #{vulnerability}, #{occurrenceSeason}, #{affectedParts}, #{notes}, #{createdBy})
+    </insert>
+
+    <!-- 更新关联关系 -->
+    <update id="update" parameterType="com.example.medicinalplant.entity.PlantDiseaseLink">
+        UPDATE plant_disease_link SET 
+            vulnerability = #{vulnerability}, 
+            occurrence_season = #{occurrenceSeason}, 
+            affected_parts = #{affectedParts}, 
+            notes = #{notes}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除关联关系 -->
+    <delete id="delete">
+        DELETE FROM plant_disease_link WHERE id = #{id}
+    </delete>
+
+    <!-- 批量删除关联关系 -->
+    <delete id="deleteByIds">
+        DELETE FROM plant_disease_link WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 根据ID查询关联关系 -->
+    <select id="selectById" resultMap="DetailResultMap">
+        SELECT 
+            pdl.*,
+            mp.name as plant_name,
+            mp.alias as plant_alias,
+            mp.image_url as plant_image_url,
+            pd.name as disease_name,
+            pd.type as disease_type,
+            pd.image_url as disease_image_url,
+            eu.name as creator_name
+        FROM plant_disease_link pdl
+        LEFT JOIN medicinal_plant mp ON pdl.plant_id = mp.id
+        LEFT JOIN pest_disease pd ON pdl.pd_id = pd.id
+        LEFT JOIN expert_user eu ON pdl.created_by = eu.id
+        WHERE pdl.id = #{id}
+    </select>
+
+    <!-- 查询所有关联关系 -->
+    <select id="findAll" resultMap="DetailResultMap">
+        SELECT 
+            pdl.*,
+            mp.name as plant_name,
+            mp.alias as plant_alias,
+            mp.image_url as plant_image_url,
+            pd.name as disease_name,
+            pd.type as disease_type,
+            pd.image_url as disease_image_url,
+            eu.name as creator_name
+        FROM plant_disease_link pdl
+        LEFT JOIN medicinal_plant mp ON pdl.plant_id = mp.id
+        LEFT JOIN pest_disease pd ON pdl.pd_id = pd.id
+        LEFT JOIN expert_user eu ON pdl.created_by = eu.id
+        ORDER BY pdl.created_at DESC
+    </select>
+
+    <!-- 根据植物ID查询关联关系 -->
+    <select id="findByPlantId" resultMap="DetailResultMap">
+        SELECT 
+            pdl.*,
+            mp.name as plant_name,
+            mp.alias as plant_alias,
+            mp.image_url as plant_image_url,
+            pd.name as disease_name,
+            pd.type as disease_type,
+            pd.image_url as disease_image_url,
+            eu.name as creator_name
+        FROM plant_disease_link pdl
+        LEFT JOIN medicinal_plant mp ON pdl.plant_id = mp.id
+        LEFT JOIN pest_disease pd ON pdl.pd_id = pd.id
+        LEFT JOIN expert_user eu ON pdl.created_by = eu.id
+        WHERE pdl.plant_id = #{plantId}
+        ORDER BY pdl.created_at DESC
+    </select>
+
+    <!-- 根据病虫害ID查询关联关系 -->
+    <select id="findByPestDiseaseId" resultMap="DetailResultMap">
+        SELECT 
+            pdl.*,
+            mp.name as plant_name,
+            mp.alias as plant_alias,
+            mp.image_url as plant_image_url,
+            pd.name as disease_name,
+            pd.type as disease_type,
+            pd.image_url as disease_image_url,
+            eu.name as creator_name
+        FROM plant_disease_link pdl
+        LEFT JOIN medicinal_plant mp ON pdl.plant_id = mp.id
+        LEFT JOIN pest_disease pd ON pdl.pd_id = pd.id
+        LEFT JOIN expert_user eu ON pdl.created_by = eu.id
+        WHERE pdl.pd_id = #{pdId}
+        ORDER BY pdl.created_at DESC
+    </select>
+
+    <!-- 检查关联关系是否已存在 -->
+    <select id="checkExists" resultType="int">
+        SELECT COUNT(*) FROM plant_disease_link 
+        WHERE plant_id = #{plantId} AND pd_id = #{pdId}
+    </select>
+
+    <!-- 根据易感性查询关联关系 -->
+    <select id="findByVulnerability" resultMap="DetailResultMap">
+        SELECT 
+            pdl.*,
+            mp.name as plant_name,
+            mp.alias as plant_alias,
+            mp.image_url as plant_image_url,
+            pd.name as disease_name,
+            pd.type as disease_type,
+            pd.image_url as disease_image_url,
+            eu.name as creator_name
+        FROM plant_disease_link pdl
+        LEFT JOIN medicinal_plant mp ON pdl.plant_id = mp.id
+        LEFT JOIN pest_disease pd ON pdl.pd_id = pd.id
+        LEFT JOIN expert_user eu ON pdl.created_by = eu.id
+        WHERE pdl.vulnerability = #{vulnerability}
+        ORDER BY pdl.created_at DESC
+    </select>
+
+    <!-- 根据发生季节查询关联关系 -->
+    <select id="findByOccurrenceSeason" resultMap="DetailResultMap">
+        SELECT 
+            pdl.*,
+            mp.name as plant_name,
+            mp.alias as plant_alias,
+            mp.image_url as plant_image_url,
+            pd.name as disease_name,
+            pd.type as disease_type,
+            pd.image_url as disease_image_url,
+            eu.name as creator_name
+        FROM plant_disease_link pdl
+        LEFT JOIN medicinal_plant mp ON pdl.plant_id = mp.id
+        LEFT JOIN pest_disease pd ON pdl.pd_id = pd.id
+        LEFT JOIN expert_user eu ON pdl.created_by = eu.id
+        WHERE pdl.occurrence_season LIKE CONCAT('%', #{occurrenceSeason}, '%')
+        ORDER BY pdl.created_at DESC
+    </select>
+
+    <!-- 统计总数 -->
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM plant_disease_link
+    </select>
+
+    <!-- 查询易感性分布统计 -->
+    <select id="findVulnerabilityDistribution" resultMap="VulnerabilityCountResultMap">
+        SELECT vulnerability, COUNT(*) as count
+        FROM plant_disease_link
+        GROUP BY vulnerability
+    </select>
+
+    <!-- 统计指定专家创建的植物-病虫害关系数量 -->
+    <select id="countByCreatedBy" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM plant_disease_link WHERE created_by = #{createdBy}
+    </select>
+
+</mapper>

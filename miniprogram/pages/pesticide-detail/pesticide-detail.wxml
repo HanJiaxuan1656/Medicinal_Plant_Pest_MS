@@ -1,0 +1,195 @@
+<!-- 农药详情页面 -->
+<view class="container" wx:if="{{pesticide}}">
+  <!-- 农药图片 -->
+  <view class="image-section">
+    <image wx:if="{{pesticide.imageUrl}}"
+           class="pesticide-image"
+           src="{{pesticide.imageUrl}}"
+           mode="aspectFill"
+           bindtap="previewImage"
+           binderror="onImageError"></image>
+    <view wx:else class="pesticide-image pesticide-image-placeholder">
+      <text class="placeholder-icon">🧪</text>
+      <text class="placeholder-text">暂无图片</text>
+    </view>
+    <view class="image-overlay">
+      <text class="pesticide-name">{{pesticide.name || '农药名称'}}</text>
+      <text class="pesticide-category" wx:if="{{pesticide.category}}">{{pesticide.category}}</text>
+    </view>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="info-section">
+    <view class="info-card">
+      <view class="card-header">
+        <text class="card-title">基本信息</text>
+        <view class="view-count">
+          <text class="count-icon">👁</text>
+          <text class="count-text">{{pesticide.viewCount || 0}}</text>
+        </view>
+      </view>
+
+      <view class="info-item">
+        <text class="info-label">农药类别</text>
+        <view class="category-container">
+          <text class="category-tag {{pesticide.category === '杀虫剂' ? 'tag-warning' : pesticide.category === '杀菌剂' ? 'tag-danger' : pesticide.category === '除草剂' ? 'tag-success' : 'tag-info'}}">
+            {{pesticide.category || '未分类'}}
+          </text>
+        </view>
+      </view>
+
+      <view class="info-item" wx:if="{{pesticide.activeIngredient}}">
+        <text class="info-label">有效成分</text>
+        <text class="info-content">{{pesticide.activeIngredient}}</text>
+      </view>
+
+      <view class="info-item" wx:if="{{pesticide.usageInstructions}}">
+        <text class="info-label">使用说明</text>
+        <text class="info-content description">{{pesticide.usageInstructions}}</text>
+      </view>
+
+      <view class="info-item" wx:if="{{pesticide.createdAt}}">
+        <text class="info-label">创建时间</text>
+        <text class="info-content">{{pesticide.createdAt}}</text>
+      </view>
+
+      <view class="info-item" wx:if="{{pesticide.manufacturer}}">
+        <text class="info-label">生产厂家</text>
+        <text class="info-content">{{pesticide.manufacturer}}</text>
+      </view>
+
+      <view class="info-item" wx:if="{{pesticide.registrationNumber}}">
+        <text class="info-label">登记证号</text>
+        <text class="info-content">{{pesticide.registrationNumber}}</text>
+      </view>
+
+      <view class="info-item" wx:if="{{pesticide.safetyLevel}}">
+        <text class="info-label">安全等级</text>
+        <view class="safety-container">
+          <text class="safety-tag safety-{{pesticide.safetyLevel}}">
+            {{pesticide.safetyLevelText || pesticide.safetyLevel}}
+          </text>
+        </view>
+      </view>
+
+      <view class="info-item" wx:if="{{pesticide.creator}}">
+        <text class="info-label">专家信息</text>
+        <view class="expert-info">
+          <image class="expert-avatar" src="{{pesticide.creator.avatarUrl}}" mode="aspectFill"></image>
+          <view class="expert-details">
+            <text class="expert-name">{{pesticide.creator.name}}</text>
+            <text class="expert-title">{{pesticide.creator.title}} · {{pesticide.creator.organization}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 使用方法 -->
+  <view class="usage-section" wx:if="{{pesticide.applicationMethods && pesticide.applicationMethods.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">使用方法</text>
+      <text class="section-count">({{pesticide.applicationMethods.length}})</text>
+    </view>
+
+    <view class="usage-list">
+      <view class="usage-item" wx:for="{{pesticide.applicationMethods}}" wx:key="id">
+        <view class="usage-header">
+          <text class="usage-title">{{item.title}}</text>
+          <text class="usage-dosage" wx:if="{{item.dosage}}">{{item.dosage}}</text>
+        </view>
+        <text class="usage-description" wx:if="{{item.description}}">{{item.description}}</text>
+        <view class="usage-notes" wx:if="{{item.notes}}">
+          <text class="notes-label">注意事项：</text>
+          <text class="notes-content">{{item.notes}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 评论区域 -->
+  <view class="comment-section">
+    <view class="section-header">
+      <text class="section-title">用户评论</text>
+      <text class="section-count">({{comments.length}})</text>
+    </view>
+
+    <!-- 发表评论 -->
+    <view class="comment-form" wx:if="{{userInfo}}">
+      <view class="form-header">
+        <image class="user-avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+        <text class="user-name">{{userInfo.nickname || userInfo.username}}</text>
+      </view>
+      <textarea class="comment-input"
+                placeholder="分享你对这个农药的使用经验..."
+                value="{{commentContent}}"
+                bindinput="onCommentInput"
+                maxlength="500"></textarea>
+      <view class="form-footer">
+        <text class="char-count">{{commentContent.length}}/500</text>
+        <button class="submit-btn"
+                bindtap="submitComment"
+                disabled="{{!isCommentValid}}">
+          发表评论
+        </button>
+      </view>
+    </view>
+
+    <!-- 登录提示 -->
+    <view class="login-tip" wx:else>
+      <text class="tip-text">登录后可发表评论</text>
+      <button class="login-btn" bindtap="goToLogin">立即登录</button>
+    </view>
+
+    <!-- 评论列表 -->
+    <view class="comment-list" wx:if="{{comments.length > 0}}">
+      <view class="comment-item" wx:for="{{comments}}" wx:key="id">
+        <view class="comment-header">
+          <image class="commenter-avatar" src="{{item.avatarUrl}}" mode="aspectFill"></image>
+          <view class="commenter-info">
+            <text class="commenter-name">{{item.nickname || item.username}}</text>
+            <text class="comment-time">{{item.createdAt}}</text>
+          </view>
+          <view class="user-type" wx:if="{{item.userType === 'expert'}}">
+            <text class="expert-badge">专家</text>
+          </view>
+        </view>
+        <text class="comment-content">{{item.content}}</text>
+      </view>
+    </view>
+
+    <!-- 评论空状态 -->
+    <view class="empty-comments" wx:else>
+      <text class="empty-icon">💬</text>
+      <text class="empty-text">暂无评论，快来发表第一条评论吧！</text>
+    </view>
+  </view>
+</view>
+
+<!-- 加载状态 -->
+<view class="loading-container" wx:if="{{loading}}">
+  <text class="loading-text">加载中...</text>
+</view>
+
+<!-- 调试信息 -->
+<view class="debug-info" wx:if="{{pesticide && false}}">
+  <view class="debug-title">调试信息</view>
+  <text class="debug-content">农药ID: {{pesticide.id}}</text>
+  <text class="debug-content">农药名称: {{pesticide.name}}</text>
+  <text class="debug-content">农药类别: {{pesticide.category}}</text>
+  <text class="debug-content">有效成分: {{pesticide.activeIngredient}}</text>
+  <text class="debug-content">图片URL: {{pesticide.imageUrl}}</text>
+  <text class="debug-content">查看次数: {{pesticide.viewCount}}</text>
+</view>
+
+<!-- 底部操作栏 -->
+<view class="bottom-actions">
+  <button class="action-btn secondary" bindtap="addToFavorites">
+    <text class="btn-icon">⭐</text>
+    <text class="btn-text">收藏</text>
+  </button>
+  <button class="action-btn primary" bindtap="shareToFriend">
+    <text class="btn-icon">📤</text>
+    <text class="btn-text">分享</text>
+  </button>
+</view>

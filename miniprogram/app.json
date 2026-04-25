@@ -1,0 +1,63 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/plants/plants",
+    "pages/plant-detail/plant-detail",
+    "pages/pests/pests",
+    "pages/pest-detail/pest-detail",
+    "pages/pesticides/pesticides",
+    "pages/pesticide-detail/pesticide-detail",
+    "pages/help/help",
+    "pages/help-detail/help-detail",
+    "pages/help-create/help-create",
+    "pages/profile/profile",
+    "pages/my-comments/my-comments",
+    "pages/edit-profile/edit-profile",
+    "pages/change-password/change-password",
+    "pages/login/login",
+    "pages/register/register"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#4CAF50",
+    "navigationBarTitleText": "药用植物助手",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f5f5"
+  },
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#4CAF50",
+    "borderStyle": "white",
+    "backgroundColor": "#ffffff",
+    "position": "bottom",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "🏠首页"
+      },
+      {
+        "pagePath": "pages/plants/plants",
+        "text": "🌿植物"
+      },
+      {
+        "pagePath": "pages/pests/pests",
+        "text": "🐛病虫害"
+      },
+      {
+        "pagePath": "pages/help/help",
+        "text": "❓求助"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "👤我的"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
+  "debug": true,
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.medicinalplant.mapper.PesticideMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="com.example.medicinalplant.entity.Pesticide">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="category" column="category"/>
+        <result property="activeIngredient" column="active_ingredient"/>
+        <result property="usageInstructions" column="usage_instructions"/>
+        <result property="imageUrl" column="image_url"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="viewCount" column="view_count"/>
+    </resultMap>
+
+    <!-- 类别统计结果映射 -->
+    <resultMap id="CategoryCountResultMap" type="com.example.medicinalplant.mapper.PesticideMapper$CategoryCount">
+        <result property="category" column="category"/>
+        <result property="count" column="count"/>
+    </resultMap>
+
+    <!-- 分页查询农药 -->
+    <select id="selectPage" resultMap="BaseResultMap">
+        SELECT * FROM pesticide
+        <where>
+            <if test="search != null and search != ''">
+                AND name LIKE CONCAT('%', #{search}, '%')
+            </if>
+            <if test="category != null and category != ''">
+                AND category = #{category}
+            </if>
+        </where>
+        ORDER BY created_at DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <!-- 统计查询结果数量 -->
+    <select id="selectCount" resultType="int">
+        SELECT COUNT(*) FROM pesticide
+        <where>
+            <if test="search != null and search != ''">
+                AND name LIKE CONCAT('%', #{search}, '%')
+            </if>
+            <if test="category != null and category != ''">
+                AND category = #{category}
+            </if>
+        </where>
+    </select>
+
+    <!-- 插入农药 -->
+    <insert id="insert" parameterType="com.example.medicinalplant.entity.Pesticide" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pesticide (name, category, active_ingredient, usage_instructions, image_url, created_by)
+        VALUES (#{name}, #{category}, #{activeIngredient}, #{usageInstructions}, #{imageUrl}, #{createdBy})
+    </insert>
+
+    <!-- 更新农药 -->
+    <update id="update" parameterType="com.example.medicinalplant.entity.Pesticide">
+        UPDATE pesticide SET 
+            name = #{name}, 
+            category = #{category}, 
+            active_ingredient = #{activeIngredient}, 
+            usage_instructions = #{usageInstructions}, 
+            image_url = #{imageUrl},
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除农药 -->
+    <delete id="delete">
+        DELETE FROM pesticide WHERE id = #{id}
+    </delete>
+
+    <!-- 批量删除农药 -->
+    <delete id="deleteByIds">
+        DELETE FROM pesticide WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 根据ID查询农药 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT * FROM pesticide WHERE id = #{id}
+    </select>
+
+    <!-- 查询所有农药 -->
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT * FROM pesticide ORDER BY created_at DESC
+    </select>
+
+    <!-- 根据类别查询农药 -->
+    <select id="findByCategory" resultMap="BaseResultMap">
+        SELECT * FROM pesticide WHERE category = #{category} ORDER BY created_at DESC
+    </select>
+
+    <!-- 根据名称查询农药 -->
+    <select id="findByName" resultMap="BaseResultMap">
+        SELECT * FROM pesticide WHERE name LIKE CONCAT('%', #{name}, '%') ORDER BY created_at DESC
+    </select>
+
+    <!-- 统计农药总数 -->
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM pesticide
+    </select>
+
+    <!-- 查询类别分布 -->
+    <select id="findCategoryDistribution" resultMap="CategoryCountResultMap">
+        SELECT category, COUNT(*) as count FROM pesticide GROUP BY category
+    </select>
+
+    <!-- 查询热门农药 -->
+    <select id="findTopPesticides" resultMap="BaseResultMap">
+        SELECT * FROM pesticide ORDER BY created_at DESC LIMIT 5
+    </select>
+
+    <!-- 查询最近添加的农药 -->
+    <select id="findRecentPesticides" resultMap="BaseResultMap">
+        SELECT * FROM pesticide 
+        WHERE created_at >= DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 7 DAY) 
+        ORDER BY created_at DESC
+    </select>
+
+    <!-- 查询所有农药（不分页） -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT * FROM pesticide ORDER BY created_at DESC
+    </select>
+
+    <!-- 根据类别查询农药 -->
+    <select id="selectByCategory" resultMap="BaseResultMap">
+        SELECT * FROM pesticide WHERE category = #{category} ORDER BY created_at DESC
+    </select>
+
+    <!-- 根据关键词查询农药 -->
+    <select id="selectByKeyword" resultMap="BaseResultMap">
+        SELECT * FROM pesticide WHERE name LIKE CONCAT('%', #{keyword}, '%') ORDER BY created_at DESC
+    </select>
+
+    <!-- 根据条件查询农药 -->
+    <select id="findByCondition" resultMap="BaseResultMap">
+        SELECT * FROM pesticide
+        <where>
+            <if test="name != null and name != ''">
+                AND name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="category != null and category != ''">
+                AND category = #{category}
+            </if>
+        </where>
+        ORDER BY created_at DESC
+    </select>
+
+    <!-- 统计指定专家创建的农药数量 -->
+    <select id="countByCreatedBy" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM pesticide WHERE created_by = #{createdBy}
+    </select>
+
+    <!-- 增加查看次数 -->
+    <update id="incrementViewCount">
+        UPDATE pesticide SET view_count = COALESCE(view_count, 0) + 1 WHERE id = #{id}
+    </update>
+
+</mapper>

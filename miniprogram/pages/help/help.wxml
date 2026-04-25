@@ -1,0 +1,126 @@
+<!-- 求助中心页面 -->
+<view class="container">
+  <!-- 顶部操作区 -->
+  <view class="header-section">
+    <view class="header-content">
+      <view class="header-info">
+        <text class="page-title">专家求助</text>
+        <text class="page-desc">向专业人士寻求帮助</text>
+      </view>
+      <button class="create-btn" bindtap="goToCreateHelp">
+        <text class="btn-icon">➕</text>
+        <text class="btn-text">发起求助</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 筛选区域 -->
+  <view class="filter-section">
+    <scroll-view class="filter-scroll" scroll-x="true" show-scrollbar="false">
+      <view class="filter-list">
+        <view class="filter-item {{selectedStatus === '' ? 'active' : ''}}"
+              bindtap="onFilterChange"
+              data-value="">
+          全部
+        </view>
+        <view class="filter-item {{selectedStatus === 'pending' ? 'active' : ''}}"
+              bindtap="onFilterChange"
+              data-value="pending">
+          待审核
+        </view>
+        <view class="filter-item {{selectedStatus === 'approved' ? 'active' : ''}}"
+              bindtap="onFilterChange"
+              data-value="approved">
+          已审核
+        </view>
+        <view class="filter-item {{selectedStatus === 'replied' ? 'active' : ''}}"
+              bindtap="onFilterChange"
+              data-value="replied">
+          已回复
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 求助列表 -->
+  <view class="help-list" wx:if="{{!loading && helpRequests.length > 0}}">
+    <view class="help-card"
+          wx:for="{{helpRequests}}"
+          wx:key="id"
+          bindtap="goToDetail"
+          data-id="{{item.id}}">
+
+      <!-- 求助头部 -->
+      <view class="help-header">
+        <view class="help-title-area">
+          <text class="help-title">{{item.title}}</text>
+          <view class="help-status">
+            <text class="status-tag status-{{item.status}}">
+              {{item.status === 'pending' ? '待审核' : item.status === 'approved' ? '已审核' : '已回复'}}
+            </text>
+          </view>
+        </view>
+
+        <view class="help-meta">
+          <view class="user-info">
+            <image class="user-avatar" src="{{item.user.avatarUrl}}" mode="aspectFill"></image>
+            <text class="user-name">{{item.user.nickname || item.user.username}}</text>
+          </view>
+          <text class="help-time">{{item.createdAt}}</text>
+        </view>
+      </view>
+
+      <!-- 求助内容 -->
+      <view class="help-content">
+        <text class="help-description">{{item.description}}</text>
+
+        <!-- 求助图片 -->
+        <view class="help-images" wx:if="{{item.imageUrl}}">
+          <image class="help-image"
+                 src="{{item.imageUrl}}"
+                 mode="aspectFill"
+                 bindtap="previewImage"
+                 data-url="{{item.imageUrl}}"></image>
+        </view>
+      </view>
+
+      <!-- 求助底部 -->
+      <view class="help-footer">
+        <view class="help-stats">
+          <text class="stat-item">💬 {{item.replyCount || 0}} 回复</text>
+          <text class="stat-item" wx:if="{{item.urgency}}">
+            🔥 {{item.urgency === '高' ? '紧急' : item.urgency === '中' ? '较急' : '一般'}}
+          </text>
+        </view>
+
+        <view class="help-actions">
+          <text class="action-text">查看详情 ></text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && helpRequests.length === 0}}">
+    <text class="empty-icon">❓</text>
+    <text class="empty-text">暂无求助信息</text>
+    <button class="create-help-btn" bindtap="goToCreateHelp">发起第一个求助</button>
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="load-more" wx:if="{{hasMore && !loading}}">
+    <button class="load-more-btn" bindtap="loadMore">加载更多</button>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>
+
+<!-- 悬浮按钮 -->
+<view class="fab-container">
+  <button class="fab-btn" bindtap="goToCreateHelp">
+    <text class="fab-icon">➕</text>
+  </button>
+</view>

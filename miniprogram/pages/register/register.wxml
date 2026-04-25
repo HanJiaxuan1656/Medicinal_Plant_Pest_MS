@@ -1,0 +1,120 @@
+<!-- 注册页面 -->
+<view class="container">
+  <!-- 顶部装饰 -->
+  <view class="header-decoration">
+    <view class="decoration-circle circle-1"></view>
+    <view class="decoration-circle circle-2"></view>
+    <view class="decoration-circle circle-3"></view>
+  </view>
+
+  <!-- 注册表单 -->
+  <view class="register-form">
+    <!-- Logo和标题 -->
+    <view class="logo-section">
+      <view class="logo-icon">🌿</view>
+      <text class="app-title">创建账号</text>
+      <text class="app-subtitle">加入药用植物助手大家庭</text>
+    </view>
+
+    <!-- 注册表单 -->
+    <view class="form-register">
+      <view class="input-group">
+        <!-- 用户名 -->
+        <view class="input-item">
+          <view class="input-icon">👤</view>
+          <input class="input-field"
+                 placeholder="请输入用户名（3-20个字符）"
+                 value="{{registerForm.username}}"
+                 bindinput="onUsernameInput"
+                 maxlength="20" />
+        </view>
+
+        <!-- 密码 -->
+        <view class="input-item">
+          <view class="input-icon">🔒</view>
+          <input class="input-field"
+                 placeholder="请输入密码（6-20个字符）"
+                 password="{{!showPassword}}"
+                 value="{{registerForm.password}}"
+                 bindinput="onPasswordInput"
+                 maxlength="20" />
+          <view class="password-toggle" bindtap="togglePassword">
+            <text class="toggle-icon">{{showPassword ? '👁️' : '🙈'}}</text>
+          </view>
+        </view>
+
+        <!-- 确认密码 -->
+        <view class="input-item">
+          <view class="input-icon">🔒</view>
+          <input class="input-field"
+                 placeholder="请再次输入密码"
+                 password="{{!showConfirmPassword}}"
+                 value="{{registerForm.confirmPassword}}"
+                 bindinput="onConfirmPasswordInput"
+                 maxlength="20" />
+          <view class="password-toggle" bindtap="toggleConfirmPassword">
+            <text class="toggle-icon">{{showConfirmPassword ? '👁️' : '🙈'}}</text>
+          </view>
+        </view>
+
+        <!-- 邮箱（可选） -->
+        <view class="input-item">
+          <view class="input-icon">📧</view>
+          <input class="input-field"
+                 placeholder="请输入邮箱（可选）"
+                 value="{{registerForm.email}}"
+                 bindinput="onEmailInput" />
+        </view>
+      </view>
+
+      <!-- 密码强度提示 -->
+      <view class="password-strength" wx:if="{{registerForm.password}}">
+        <text class="strength-label">密码强度：</text>
+        <view class="strength-bar">
+          <view class="strength-item {{passwordStrength >= 1 ? 'active weak' : ''}}"></view>
+          <view class="strength-item {{passwordStrength >= 2 ? 'active medium' : ''}}"></view>
+          <view class="strength-item {{passwordStrength >= 3 ? 'active strong' : ''}}"></view>
+        </view>
+        <text class="strength-text">{{passwordStrengthText}}</text>
+      </view>
+
+      <!-- 表单验证提示 -->
+      <view class="form-tips" wx:if="{{formErrors.length > 0}}">
+        <view class="tip-item" wx:for="{{formErrors}}" wx:key="*this">
+          <text class="tip-icon">⚠️</text>
+          <text class="tip-text">{{item}}</text>
+        </view>
+      </view>
+
+      <!-- 注册按钮 -->
+      <button class="register-btn"
+              bindtap="onRegister"
+              disabled="{{!canRegister || registering}}">
+        <text wx:if="{{registering}}">注册中...</text>
+        <text wx:else>立即注册</text>
+      </button>
+
+      <!-- 登录链接 -->
+      <view class="login-link">
+        <text class="link-text">已有账号？</text>
+        <text class="link-btn" bindtap="goToLogin">立即登录</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部信息 -->
+  <view class="footer-info">
+    <text class="privacy-text">注册即表示同意</text>
+    <text class="privacy-link" bindtap="showPrivacy">《用户协议》</text>
+    <text class="privacy-text">和</text>
+    <text class="privacy-link" bindtap="showPrivacy">《隐私政策》</text>
+  </view>
+</view>
+
+<!-- 加载遮罩 -->
+<view class="loading-mask" wx:if="{{registering}}">
+  <view class="loading-content">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">注册中...</text>
+  </view>
+</view>

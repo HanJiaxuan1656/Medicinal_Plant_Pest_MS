@@ -1,0 +1,138 @@
+<!-- 病虫害列表页面 -->
+<view class="container">
+  <!-- 搜索和筛选 -->
+  <view class="search-filter-section">
+    <view class="search-box">
+      <input class="search-input"
+             placeholder="搜索病虫害名称..."
+             value="{{searchKeyword}}"
+             bindinput="onSearchInput"
+             bindconfirm="onSearch" />
+      <text class="search-btn" bindtap="onSearch">🔍</text>
+    </view>
+
+    <!-- 类型筛选 -->
+    <scroll-view class="filter-scroll" scroll-x="true" show-scrollbar="false">
+      <view class="filter-list">
+        <view class="filter-item {{selectedType === '' ? 'active' : ''}}"
+              bindtap="onFilterChange"
+              data-type="type"
+              data-value="">
+          全部
+        </view>
+        <view class="filter-item {{selectedType === '病害' ? 'active' : ''}}"
+              bindtap="onFilterChange"
+              data-type="type"
+              data-value="病害">
+          病害
+        </view>
+        <view class="filter-item {{selectedType === '虫害' ? 'active' : ''}}"
+              bindtap="onFilterChange"
+              data-type="type"
+              data-value="虫害">
+          虫害
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 排序选项 -->
+    <view class="sort-section">
+      <text class="sort-label">排序：</text>
+      <view class="sort-options">
+        <text class="sort-item {{sortBy === 'default' ? 'active' : ''}}"
+              bindtap="onSortChange"
+              data-value="default">
+          默认
+        </text>
+        <text class="sort-item {{sortBy === 'latest' ? 'active' : ''}}"
+              bindtap="onSortChange"
+              data-value="latest">
+          最新
+        </text>
+        <text class="sort-item {{sortBy === 'severity' ? 'active' : ''}}"
+              bindtap="onSortChange"
+              data-value="severity">
+          危害程度
+        </text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 病虫害列表 -->
+  <view class="pests-list" wx:if="{{!loading && pests.length > 0}}">
+    <view class="pest-card"
+          wx:for="{{pests}}"
+          wx:key="id"
+          bindtap="goToDetail"
+          data-id="{{item.id}}">
+      <image class="pest-image"
+             src="{{item.imageUrl}}"
+             mode="aspectFill"
+             lazy-load
+             binderror="onImageError"
+             data-index="{{index}}"></image>
+
+      <view class="pest-content">
+        <view class="pest-header">
+          <text class="pest-name">{{item.name}}</text>
+          <view class="pest-type">
+            <text class="type-tag {{item.type === '病害' ? 'tag-danger' : 'tag-warning'}}">
+              {{item.type}}
+            </text>
+          </view>
+        </view>
+
+        <view class="pest-info">
+          <view class="info-row" wx:if="{{item.symptoms}}">
+            <text class="info-label">主要症状：</text>
+            <text class="info-content">{{item.symptoms}}</text>
+          </view>
+
+          <view class="info-row" wx:if="{{item.cause}}">
+            <text class="info-label">发病原因：</text>
+            <text class="info-content">{{item.cause}}</text>
+          </view>
+
+          <view class="info-row" wx:if="{{item.severity}}">
+            <text class="info-label">危害程度：</text>
+            <view class="severity-level">
+              <text class="severity-tag severity-{{item.severity}}">{{item.severityText || item.severity}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="pest-footer">
+          <view class="pest-stats">
+            <text class="stat-item">📅 {{item.createdAt}}</text>
+            <text class="stat-item" wx:if="{{item.affectedPlants}}">
+              🌿 影响 {{item.affectedPlants.length}} 种植物
+            </text>
+          </view>
+          <text class="view-detail">查看详情 ></text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && pests.length === 0}}">
+    <text class="empty-icon">🐛</text>
+    <text class="empty-text">暂无病虫害数据</text>
+    <button class="retry-btn" bindtap="loadPests">重新加载</button>
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="load-more" wx:if="{{hasMore && !loading}}">
+    <button class="load-more-btn" bindtap="loadMore">加载更多</button>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>
+
+<!-- 返回顶部 -->
+<view class="back-to-top {{showBackTop ? 'show' : ''}}" bindtap="backToTop">
+  <text class="back-icon">↑</text>
+</view>
